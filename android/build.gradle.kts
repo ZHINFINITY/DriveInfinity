@@ -13,7 +13,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.drdisagree.teledrive"
+        applicationId = "com.infinity.drive"
         minSdk = 26
         targetSdk = 37
         versionCode = libs.versions.appVersionCode.get().toInt()
