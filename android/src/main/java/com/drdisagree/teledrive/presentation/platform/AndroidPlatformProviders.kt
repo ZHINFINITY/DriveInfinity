@@ -1,6 +1,7 @@
 package com.drdisagree.teledrive.presentation.platform
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Environment
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -63,12 +64,19 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
     val folderLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocumentTree()
     ) { uri ->
+        uri?.let {
+            runCatching {
+                context.contentResolver.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            }
+        }
         val path = uri?.let { DocumentTreePaths.treeToFilePath(context, it) }
         folderCallback.fire(
             when {
                 uri == null -> PickResult.Canceled
-                path == null -> PickResult.Unreadable
-                else -> PickResult.Picked(path)
+                else -> PickResult.Picked(path ?: uri.toString())
             }
         )
     }

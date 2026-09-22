@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import androidx.documentfile.provider.DocumentFile
 import androidx.core.net.toUri
 import com.drdisagree.teledrive.core.common.SafeLog
 import java.io.File
@@ -76,7 +77,9 @@ class AndroidFileImporter(
     }
 
     override fun expand(reference: String): List<ImportSource> =
-        expandDirectory(reference) ?: listOf(ImportSource(reference, ""))
+        expandDirectory(reference)
+            ?: expandSafTree(reference)
+            ?: listOf(ImportSource(reference, ""))
 
     override fun isStaged(path: String): Boolean =
         File(path).parentFile == File(context.filesDir, IMPORT_DIR)
@@ -88,6 +91,40 @@ class AndroidFileImporter(
                 SafeLog.d(TAG, "Dropping an orphaned import of ${orphan.length()} bytes")
                 orphan.delete()
             }
+    }
+
+    /**
+     * SAF providers do not always expose a real filesystem path. Walk the tree
+     * through DocumentFile instead of rejecting folders selected from those
+     * providers. The selected folder itself becomes the first path segment.
+     */
+    private fun expandSafTree(reference: String): List<ImportSource>? {
+        val uri = runCatching { Uri.parse(reference) }.getOrNull()
+            ?.takeIf { it.scheme == ContentResolver.SCHEME_CONTENT }
+            ?: return null
+        val root = DocumentFile.fromTreeUri(context, uri)?.takeIf { it.isDirectory }
+            ?: return null
+        val rootName = FileNameUtils.sanitize(root.name ?: "Folder")
+        val result = mutableListOf<ImportSource>()
+
+        fun visit(directory: DocumentFile, relativeFolder: String) {
+            directory.listFiles()
+                .sortedBy { it.name.orEmpty().lowercase() }
+                .forEach { child ->
+                    val childName = FileNameUtils.sanitize(child.name ?: "unnamed")
+                    if (child.isDirectory) {
+                        visit(child, "$relativeFolder/$childName")
+                    } else if (child.isFile) {
+                        result += ImportSource(
+                            reference = child.uri.toString(),
+                            relativeFolder = relativeFolder
+                        )
+                    }
+                }
+        }
+
+        visit(root, rootName)
+        return result
     }
 
     private fun readablePath(uri: Uri): File? {
