@@ -4,6 +4,16 @@ import androidx.room.migration.Migration
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.execSQL
 
+/** Adds the covering index used to claim queued transfers in priority order. */
+val MIGRATION_10_11 = object : Migration(10, 11) {
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL(
+            "CREATE INDEX IF NOT EXISTS index_transfers_state_priority_createdAt " +
+                    "ON transfers(state, priority, createdAt)"
+        )
+    }
+}
+
 /** Adds iconFileId for storing uploaded APK icon remote file IDs. */
 val MIGRATION_9_10 = object : Migration(9, 10) {
     override fun migrate(connection: SQLiteConnection) {

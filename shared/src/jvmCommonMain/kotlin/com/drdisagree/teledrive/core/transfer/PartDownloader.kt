@@ -69,6 +69,11 @@ class PartDownloader(
             withContext(dispatchers.io) { appendPart(source, target, encrypted) }
 
             written += part.plainSize
+            withContext(dispatchers.io) {
+                check(target.length() == written) {
+                    "Assembled file length mismatch after part ${part.partIndex}: expected $written, got ${target.length()}"
+                }
+            }
             emit(Event.Progress(written))
         }
 

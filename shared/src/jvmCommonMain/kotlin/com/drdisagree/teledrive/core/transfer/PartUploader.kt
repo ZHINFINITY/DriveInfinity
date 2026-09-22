@@ -22,6 +22,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStream
+import java.nio.channels.Channels
+import java.nio.channels.FileChannel
+import java.nio.file.StandardOpenOption
 
 /**
  * Uploads a file Telegram will not take whole, one part at a time.
@@ -170,29 +173,21 @@ class PartUploader(
         encrypt: Boolean
     ) {
         target.parentFile?.mkdirs()
-        source.inputStream().use { input ->
-            skipExactly(input, plainOffset)
-            val ranged = RangeInputStream(input, plainSize)
-            target.outputStream().buffered().use { output ->
-                if (encrypt) {
-                    val key = wrappedKeyRepository.getOrCreate(CryptoKeys.CONTENT)
-                    streamCrypto.encryptStream(key, ranged, output)
-                } else {
-                    ranged.copyTo(output)
+        FileChannel.open(source.toPath(), StandardOpenOption.READ).use { channel ->
+            channel.position(plainOffset)
+            Channels.newInputStream(channel).use { input ->
+                val ranged = RangeInputStream(input, plainSize)
+                target.outputStream().buffered().use { output ->
+                    if (encrypt) {
+                        val key = wrappedKeyRepository.getOrCreate(CryptoKeys.CONTENT)
+                        streamCrypto.encryptStream(key, ranged, output)
+                    } else {
+                        ranged.copyTo(output)
+                    }
+                    check(ranged.bytesRead == plainSize) {
+                        "Source changed or ended while reading part: expected $plainSize bytes, read ${ranged.bytesRead}"
+                    }
                 }
-            }
-        }
-    }
-
-    private fun skipExactly(input: InputStream, count: Long) {
-        var remaining = count
-        while (remaining > 0) {
-            val skipped = input.skip(remaining)
-            if (skipped <= 0) {
-                if (input.read() == -1) return
-                remaining--
-            } else {
-                remaining -= skipped
             }
         }
     }
@@ -213,6 +208,7 @@ private class RangeInputStream(
 ) : InputStream() {
 
     private var read = 0L
+    val bytesRead: Long get() = read
 
     override fun read(): Int {
         if (read >= limit) return -1

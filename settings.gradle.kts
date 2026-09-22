@@ -36,7 +36,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TeleDrive"
+rootProject.name = "DriveInfinity"
 include(":android")
 include(":shared")
 include(":desktop")

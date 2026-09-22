@@ -1,16 +1,16 @@
 <div align="center">
 
-<img src="android/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width="120" alt="TeleDrive icon">
+<img src="android/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width="120" alt="Drive∞ icon">
 
-# TeleDrive
+# Drive∞
 
 Back up and browse your files using a private Telegram channel as storage.
 
 [![Platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20Windows-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#requirements)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.4-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/Compose%20Multiplatform-Material%203-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)](https://www.jetbrains.com/compose-multiplatform/)
-[![Release](https://img.shields.io/github/v/release/Mahmud0808/TeleDrive?style=for-the-badge&logo=github&logoColor=white&color=1F883D)](https://github.com/Mahmud0808/TeleDrive/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/Mahmud0808/TeleDrive/total?style=for-the-badge&logo=github&logoColor=white&color=D97706)](https://github.com/Mahmud0808/TeleDrive/releases)
+[![Release](https://img.shields.io/github/v/release/ZHINFINITY/DriveInfinity?style=for-the-badge&logo=github&logoColor=white&color=1F883D)](https://github.com/ZHINFINITY/DriveInfinity/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/ZHINFINITY/DriveInfinity/total?style=for-the-badge&logo=github&logoColor=white&color=D97706)](https://github.com/ZHINFINITY/DriveInfinity/releases)
 [![License](https://img.shields.io/badge/license-Apache%202.0-6750A4?style=for-the-badge&logo=apache&logoColor=white)](LICENSE)
 <br><br>
 <a href="https://www.buymeacoffee.com/DrDisagree"><img src="https://raw.githubusercontent.com/Mahmud0808/ColorBlendr/master/.github/resources/bmc-button.png" width="30%" alt="Buy me a coffee" /></a>
@@ -59,7 +59,7 @@ in `%APPDATA%\TeleDrive` and survive reinstalls.
 
 ### Android
 
-Grab an APK from the [releases page](../../releases). Builds are split per CPU
+Grab an APK from the [ARM64 GitHub Actions workflow](../../actions/workflows/drive-infinity-arm64.yml) or [releases page](../../releases). Builds are split per CPU
 architecture, so pick the one that matches your device:
 
 | APK | Use it when |
@@ -95,8 +95,8 @@ pooled with anyone else's, and a rate limit on someone else cannot affect you.
 ## Getting started
 
 ```bash
-git clone https://github.com/Mahmud0808/TeleDrive.git
-cd TeleDrive
+git clone https://github.com/ZHINFINITY/DriveInfinity.git
+cd DriveInfinity
 ./gradlew :android:installDebug  # Android
 ./gradlew :desktop:run           # Windows desktop
 ```

@@ -1,6 +1,6 @@
 <resources>
     <!-- App-wide -->
-    <string name="app_name">TeleDrive</string>
+    <string name="app_name">Drive∞</string>
 
     <!-- Shared labels and dialogs -->
     <string name="common_actions">Действия</string>

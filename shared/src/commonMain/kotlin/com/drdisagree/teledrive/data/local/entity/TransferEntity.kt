@@ -9,7 +9,12 @@ import com.drdisagree.teledrive.domain.model.TransferType
 
 @Entity(
     tableName = "transfers",
-    indices = [Index("state"), Index("fileId"), Index("createdAt")]
+    indices = [
+        Index("state"),
+        Index("fileId"),
+        Index("createdAt"),
+        Index(value = ["state", "priority", "createdAt"])
+    ]
 )
 data class TransferEntity(
     @PrimaryKey val id: String,

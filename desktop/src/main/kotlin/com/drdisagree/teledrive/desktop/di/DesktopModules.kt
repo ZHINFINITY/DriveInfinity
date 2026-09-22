@@ -142,7 +142,8 @@ val desktopModule = module {
                 com.drdisagree.teledrive.data.local.database.MIGRATION_6_7,
                 com.drdisagree.teledrive.data.local.database.MIGRATION_7_8,
                 com.drdisagree.teledrive.data.local.database.MIGRATION_8_9,
-                com.drdisagree.teledrive.data.local.database.MIGRATION_9_10
+                com.drdisagree.teledrive.data.local.database.MIGRATION_9_10,
+                com.drdisagree.teledrive.data.local.database.MIGRATION_10_11
             )
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
