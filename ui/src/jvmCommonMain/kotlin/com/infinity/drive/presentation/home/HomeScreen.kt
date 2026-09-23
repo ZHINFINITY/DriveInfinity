@@ -652,15 +652,15 @@ private fun BackupCard(
                         }
                         Spacer(Modifier.height(12.dp))
                         HomeProgressBar(
-                            progress = session.progress,
+                            progress = overallBackupProgress(state),
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(Modifier.height(6.dp))
                         Text(
                             text = stringResource(
                                 Res.string.home_session_progress,
-                                session.completedFiles,
-                                session.totalFiles
+                                state.backedUpCount,
+                                state.totalFiles
                             ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
@@ -719,6 +719,13 @@ private fun BackupCard(
         }
     }
 }
+
+private fun overallBackupProgress(state: HomeUiState): Float =
+    if (state.totalFiles > 0) {
+        (state.backedUpCount.toFloat() / state.totalFiles).coerceIn(0f, 1f)
+    } else {
+        0f
+    }
 
 @Composable
 private fun HomeProgressBar(

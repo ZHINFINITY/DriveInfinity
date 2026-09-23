@@ -21,7 +21,13 @@ fun countSession(transfers: List<TransferEntity>): BackupSessionCounts {
         completedFiles = completed.size,
         failedFiles = remaining.count { it.state == TransferState.FAILED },
         totalBytes = remaining.sumOf { it.sizeBytes },
-        transferredBytes = completed.sumOf { it.sizeBytes },
+        transferredBytes = remaining.sumOf {
+            if (it.state == TransferState.COMPLETED) {
+                it.sizeBytes
+            } else {
+                it.transferredBytes.coerceIn(0L, it.sizeBytes)
+            }
+        },
         settled = remaining.none { !it.state.isTerminal },
         allPaused = remaining.any { it.state == TransferState.PAUSED } &&
                 remaining.none { it.state == TransferState.QUEUED || it.state == TransferState.RUNNING }

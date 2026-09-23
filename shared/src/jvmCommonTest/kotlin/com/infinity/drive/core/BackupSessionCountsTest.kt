@@ -13,7 +13,8 @@ class BackupSessionCountsTest {
     private fun transfer(
         id: String,
         state: TransferState,
-        sizeBytes: Long = 100
+        sizeBytes: Long = 100,
+        transferredBytes: Long = 0
     ) = TransferEntity(
         id = id,
         type = TransferType.BACKUP,
@@ -24,6 +25,7 @@ class BackupSessionCountsTest {
         messageId = null,
         remoteFileId = null,
         sizeBytes = sizeBytes,
+        transferredBytes = transferredBytes,
         state = state,
         backupSessionId = "session",
         createdAt = 1,
@@ -57,6 +59,19 @@ class BackupSessionCountsTest {
         assertEquals(2, counts.totalFiles)
         assertEquals(1, counts.failedFiles)
         assertTrue(counts.settled)
+    }
+
+    @Test
+    fun partialTransfersContributeToProgressBytes() {
+        val counts = countSession(
+            listOf(
+                transfer("a", TransferState.RUNNING, sizeBytes = 100, transferredBytes = 40),
+                transfer("b", TransferState.QUEUED, sizeBytes = 300)
+            )
+        )
+
+        assertEquals(400L, counts.totalBytes)
+        assertEquals(40L, counts.transferredBytes)
     }
 
     @Test

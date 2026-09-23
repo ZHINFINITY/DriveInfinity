@@ -67,7 +67,8 @@ class TransferExecutor(
     private val filePartDao: FilePartDao,
     private val partUploader: PartUploader,
     private val partDownloader: PartDownloader,
-    private val apkIconUploader: ApkIconUploader
+    private val apkIconUploader: ApkIconUploader,
+    private val backupSessionTracker: BackupSessionTracker
 ) {
 
     /**
@@ -113,6 +114,16 @@ class TransferExecutor(
         throw CancellationException("Transfer ${transfer.id} was cancelled")
     } catch (error: Throwable) {
         Outcome.Failed(error.message ?: messages.uploadEnded)
+    }
+
+    private suspend fun recordProgress(
+        transfer: TransferEntity,
+        transferredBytes: Long,
+        speed: Long,
+        now: Long
+    ) {
+        transferDao.updateProgress(transfer.id, transferredBytes, speed, now)
+        transfer.backupSessionId?.let { backupSessionTracker.refresh(it) }
     }
 
     private suspend fun executeUpload(transfer: TransferEntity): Outcome {
@@ -222,9 +233,7 @@ class TransferExecutor(
                     is TelegramUploadEvent.Progress -> {
                         val now = System.currentTimeMillis()
                         ticker.tick(event.transferredBytes, now)?.let { speed ->
-                            transferDao.updateProgress(
-                                transfer.id, event.transferredBytes, speed, now
-                            )
+                            recordProgress(transfer, event.transferredBytes, speed, now)
                         }
                         checkControl(transfer.id)
                     }
@@ -328,9 +337,7 @@ class TransferExecutor(
                         is PartUploader.Event.Progress -> {
                             val now = System.currentTimeMillis()
                             ticker.tick(event.transferredBytes, now)?.let { speed ->
-                                transferDao.updateProgress(
-                                    transfer.id, event.transferredBytes, speed, now
-                                )
+                                recordProgress(transfer, event.transferredBytes, speed, now)
                             }
                             checkControl(transfer.id)
                         }
@@ -425,9 +432,7 @@ class TransferExecutor(
                         is TelegramDownloadEvent.Progress -> {
                             val now = System.currentTimeMillis()
                             ticker.tick(event.transferredBytes, now)?.let { speed ->
-                                transferDao.updateProgress(
-                                    transfer.id, event.transferredBytes, speed, now
-                                )
+                                recordProgress(transfer, event.transferredBytes, speed, now)
                             }
                             checkControl(transfer.id)
                         }
@@ -463,9 +468,7 @@ class TransferExecutor(
                             val now = System.currentTimeMillis()
                             transferDao.setStage(transfer.id, null, now)
                             ticker.tick(event.transferredBytes, now)?.let { speed ->
-                                transferDao.updateProgress(
-                                    transfer.id, event.transferredBytes, speed, now
-                                )
+                                recordProgress(transfer, event.transferredBytes, speed, now)
                             }
                             checkControl(transfer.id)
                         }
