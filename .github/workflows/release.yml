@@ -88,19 +88,18 @@ jobs:
           body: |
             ## DriveInfinity v1.0.0
 
-            This release makes DriveInfinity more reliable, clearer to use, and stronger for long-running cloud uploads.
+            DriveInfinity v1.0.0 brings a smoother, stronger, and more polished experience for cloud storage, uploads, downloads, and everyday file management.
 
-            ### Highlights
-            - Added AMOLED theme support with a true-black palette.
-            - Fixed the About page crash and removed inherited links from the original project.
-            - Added DriveInfinity GitHub and Ko-fi links in About.
-            - Improved whole-folder uploads, including nested files and zero-byte files.
-            - Made pause/resume and large-file transfers more resilient with stall recovery and persistent progress recovery.
-            - Added a richer home dashboard with upload, queue, storage, and recent-file information.
-            - Improved transfer cards, history sections, navigation styling, and spacing to prevent overlap.
-            - Added chunk progress details below upload progress bars for large files.
-            - Improved storage category visibility for images, video, audio, documents, archives, and other files.
-            - Fixed launcher icon sizing and About icon rendering.
+            ### Major improvements
+            - 🌑 AMOLED theme with a true-black interface for comfortable viewing and battery-friendly dark mode.
+            - ☁️ More dependable large-file uploads and downloads with stronger pause, resume, retry, and transfer recovery behavior.
+            - 📁 Complete folder uploads with nested files, preserved folder structure, and support for empty files.
+            - 📊 Clearer transfer progress with upload/download status, transfer history, queue information, and chunk details for large files.
+            - 🏠 A richer home dashboard with active uploads, queue statistics, recent files, storage usage, and backup information.
+            - 💾 More informative storage views with file-type visibility for images, video, audio, documents, archives, and other files.
+            - 🎨 A more polished interface across storage channels, transfer cards, history sections, navigation, spacing, and progress presentation.
+            - 🖼️ Improved app icon presentation across the launcher, About page, and application surfaces.
+            - 🔄 GitHub-based in-app update checking through the DriveInfinity release channel.
 
             ### Downloads
             - Android release APKs
