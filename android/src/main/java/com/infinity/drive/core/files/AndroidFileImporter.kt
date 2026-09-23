@@ -40,15 +40,14 @@ class AndroidFileImporter(
             return ImportedFile(source.absolutePath, source.name, source.length())
         }
 
-        val metadata = queryMetadata(uri) ?: run {
-            SafeLog.w(TAG, "Import failed: the provider returned no metadata")
-            return null
-        }
-        val displayName = FileNameUtils.sanitize(metadata.first)
+        val metadata = queryMetadata(uri)
+        val displayName = FileNameUtils.sanitize(
+            metadata?.first ?: uri.lastPathSegment ?: "selected-file"
+        )
         val targetDir = File(context.filesDir, IMPORT_DIR).apply { mkdirs() }
 
         val staged = File(targetDir, displayName)
-        if (staged.isFile && staged.length() == metadata.second && metadata.second > 0) {
+        if (staged.isFile && metadata?.second?.let { it > 0 && staged.length() == it } == true) {
             return ImportedFile(staged.absolutePath, displayName, staged.length())
         }
 
