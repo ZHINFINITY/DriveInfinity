@@ -219,6 +219,10 @@ packages of `shared/`.
 
 DriveInfinity is derived from the original work by **Mahmudul Hasan Khan**
 (GitHub: [Mahmud0808](https://github.com/Mahmud0808), also known as
+**DrDisagree**). The original copyright and Apache License 2.0 terms are
+preserved in [LICENSE](LICENSE), and the original contribution history remains
+available in this repository's Git history.
+
 ## License
 
 [Apache License 2.0](LICENSE).
