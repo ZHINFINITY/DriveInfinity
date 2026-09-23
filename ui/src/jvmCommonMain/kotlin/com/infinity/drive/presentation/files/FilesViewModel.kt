@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.infinity.drive.core.common.AppResult
+import com.infinity.drive.core.common.SafeLog
 import com.infinity.drive.core.files.DeleteConsentRequest
 import com.infinity.drive.core.files.FileImporter
 import com.infinity.drive.core.files.MimeTypes
@@ -57,6 +58,7 @@ import com.infinity.drive.resources.message_moved_to_trash_count
 import com.infinity.drive.resources.message_nothing_to_download
 import com.infinity.drive.resources.note_not_editable
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
@@ -593,7 +595,12 @@ class FilesViewModel(
      * Imports run outside viewModelScope: preparing a large pick can take
      * minutes, and leaving this screen must not silently cancel it.
      */
-    private val importScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val importScope = CoroutineScope(
+        SupervisorJob() + Dispatchers.IO + CoroutineExceptionHandler { _, error ->
+            SafeLog.e(TAG, "Selected file import failed", error)
+            _messages.tryEmit(UiText.Resource(Res.string.files_import_failed))
+        }
+    )
 
     fun importAndUpload(uris: List<String>, target: String? = folderId) {
         if (uris.isEmpty()) return
@@ -751,6 +758,7 @@ class FilesViewModel(
     }
 
     companion object {
+        private const val TAG = "FilesViewModel"
         private const val MIN_REFRESH_VISIBLE_MS = 700L
         private const val MAX_BREADCRUMB_DEPTH = 64
     }
