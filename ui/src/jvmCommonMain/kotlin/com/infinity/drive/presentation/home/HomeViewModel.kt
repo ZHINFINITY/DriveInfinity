@@ -17,7 +17,6 @@ import com.infinity.drive.domain.model.DriveChannel
 import com.infinity.drive.domain.model.DriveFile
 import com.infinity.drive.domain.model.DriveFolder
 import com.infinity.drive.domain.model.StorageSlice
-import com.infinity.drive.domain.model.ProgressBarStyle
 import com.infinity.drive.domain.repository.BackupRepository
 import com.infinity.drive.domain.repository.ChannelRepository
 import com.infinity.drive.domain.repository.FileRepository
@@ -77,7 +76,6 @@ data class HomeUiState(
     val storage: List<StorageSlice> = emptyList(),
     val autoBackupEnabled: Boolean = false,
     val lastBackupAt: Long? = null,
-    val progressBarStyle: ProgressBarStyle = ProgressBarStyle.STRAIGHT
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -182,8 +180,7 @@ class HomeViewModel(
                 prefs.appLockEnabled,
                 prefs.showArchivedFiles,
                 prefs.showHiddenFiles,
-                prefs.showRecentFiles,
-                prefs.progressBarStyle
+                prefs.showRecentFiles
             )
         }
     ) { countsWithStorage, recents, favorites, activeTransfers, misc ->
@@ -216,8 +213,7 @@ class HomeViewModel(
             showArchivedSection = showArchived,
             showHiddenSection = showHidden,
             showRecentSection = misc.showRecentSection,
-            activeTransferCount = activeTransfers,
-            progressBarStyle = misc.progressBarStyle
+            activeTransferCount = activeTransfers
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState())
 
@@ -294,8 +290,7 @@ class HomeViewModel(
         val appLockEnabled: Boolean,
         val showArchivedSection: Boolean,
         val showHiddenSection: Boolean,
-        val showRecentSection: Boolean,
-        val progressBarStyle: ProgressBarStyle
+        val showRecentSection: Boolean
     )
 
     private data class HomeCounts(

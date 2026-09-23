@@ -682,8 +682,6 @@
     <string name="settings_archived_shortcut">Ярлык архива</string>
     <string name="settings_compact_layout">Компактный вид</string>
     <string name="settings_dynamic_color">Динамические цвета</string>
-    <string name="settings_progress_bar">Индикатор прогресса</string>
-    <string name="settings_progress_bar_summary">Выберите волнистую или прямую линию</string>
     <string name="settings_gallery_grid_columns">Колонок в сетке галереи</string>
     <string name="settings_gallery_grid_view">Вид сеткой в галерее</string>
     <string name="settings_grid_columns">Колонок в сетке файлов</string>
@@ -933,10 +931,6 @@
         <item>Тёмная</item>
         <item>AMOLED</item>
         <item>Системная</item>
-    </string-array>
-    <string-array name="progress_bar_style_labels">
-        <item>Волнистый</item>
-        <item>Прямой</item>
     </string-array>
     <string-array name="language_labels">
         <item>Системный (по умолчанию)</item>

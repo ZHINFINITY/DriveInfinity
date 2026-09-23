@@ -660,8 +660,6 @@
     <string name="settings_archived_shortcut">Atalho para Arquivados</string>
     <string name="settings_compact_layout">Layout compacto</string>
     <string name="settings_dynamic_color">Cor dinâmica</string>
-    <string name="settings_progress_bar">Barra de progresso</string>
-    <string name="settings_progress_bar_summary">Escolha uma linha ondulada ou reta</string>
     <string name="settings_gallery_grid_columns">Colunas da grade na galeria</string>
     <string name="settings_gallery_grid_view">Visualização em grade na galeria</string>
     <string name="settings_grid_columns">Colunas da grade nos arquivos</string>
@@ -911,10 +909,6 @@
         <item>Escuro</item>
         <item>AMOLED</item>
         <item>Padrão do sistema</item>
-    </string-array>
-    <string-array name="progress_bar_style_labels">
-        <item>Ondulada</item>
-        <item>Reta</item>
     </string-array>
     <string-array name="language_labels">
         <item>Padrão do sistema</item>

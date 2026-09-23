@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.infinity.drive.domain.model.TransferSection
 import com.infinity.drive.domain.model.TransferTask
 import com.infinity.drive.domain.repository.TransferRepository
-import com.infinity.drive.domain.repository.SettingsRepository
-import com.infinity.drive.domain.model.ProgressBarStyle
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -22,13 +20,11 @@ data class TransfersUiState(
     val pausedTotal: Int = 0,
     val failedTotal: Int = 0,
     val completedTotal: Int = 0,
-    val progressBarStyle: ProgressBarStyle = ProgressBarStyle.STRAIGHT,
     val loading: Boolean = true
 )
 
 class TransfersViewModel(
-    private val transferRepository: TransferRepository,
-    private val settingsRepository: SettingsRepository
+    private val transferRepository: TransferRepository
 ) : ViewModel() {
 
     private val rows = combine(
@@ -56,11 +52,7 @@ class TransfersViewModel(
         transferRepository.observeSectionCount(TransferSection.COMPLETED)
     ) { counts -> counts.toList() }
 
-    val uiState: StateFlow<TransfersUiState> = combine(
-        rows,
-        totals,
-        settingsRepository.preferences
-    ) { sections, counts, prefs ->
+    val uiState: StateFlow<TransfersUiState> = combine(rows, totals) { sections, counts ->
         TransfersUiState(
             active = sections[0],
             paused = sections[1],
@@ -70,7 +62,6 @@ class TransfersViewModel(
             pausedTotal = counts[1],
             failedTotal = counts[2],
             completedTotal = counts[3],
-            progressBarStyle = prefs.progressBarStyle,
             loading = false
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TransfersUiState())

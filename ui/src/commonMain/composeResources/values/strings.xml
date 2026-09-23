@@ -660,8 +660,6 @@
     <string name="settings_archived_shortcut">Archived shortcut</string>
     <string name="settings_compact_layout">Compact layout</string>
     <string name="settings_dynamic_color">Dynamic color</string>
-    <string name="settings_progress_bar">Progress bar</string>
-    <string name="settings_progress_bar_summary">Choose an animated or straight progress line</string>
     <string name="settings_gallery_grid_columns">Gallery grid columns</string>
     <string name="settings_gallery_grid_view">Grid view in gallery</string>
     <string name="settings_grid_columns">Files grid columns</string>
@@ -911,10 +909,6 @@
         <item>Dark</item>
         <item>AMOLED</item>
         <item>System default</item>
-    </string-array>
-    <string-array name="progress_bar_style_labels">
-        <item>Wavy</item>
-        <item>Straight</item>
     </string-array>
     <string-array name="language_labels">
         <item>System default</item>

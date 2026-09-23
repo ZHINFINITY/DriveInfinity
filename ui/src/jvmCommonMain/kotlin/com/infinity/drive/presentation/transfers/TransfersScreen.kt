@@ -29,6 +29,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,9 +41,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.vector.ImageVector
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
@@ -89,7 +87,6 @@ import com.infinity.drive.domain.model.TransferStage
 import com.infinity.drive.domain.model.TransferState
 import com.infinity.drive.domain.model.TransferTask
 import com.infinity.drive.domain.model.TransferType
-import com.infinity.drive.domain.model.ProgressBarStyle
 import com.infinity.drive.core.transfer.FileParts
 import com.infinity.drive.presentation.common.Formatters
 import com.infinity.drive.presentation.common.add
@@ -225,7 +222,6 @@ fun TransfersScreen(
             section("active", activeTitle, state.active, state.activeTotal) { transfer ->
                 TransferRow(
                     transfer = transfer,
-                    progressBarStyle = state.progressBarStyle,
                     primaryIcon = Icons.Filled.Pause,
                     primaryLabel = stringResource(Res.string.common_pause),
                     onPrimary = { viewModel.pause(transfer.id) },
@@ -235,7 +231,6 @@ fun TransfersScreen(
             section("paused", pausedTitle, state.paused, state.pausedTotal) { transfer ->
                 TransferRow(
                     transfer = transfer,
-                    progressBarStyle = state.progressBarStyle,
                     primaryIcon = Icons.Filled.PlayArrow,
                     primaryLabel = stringResource(Res.string.common_resume),
                     onPrimary = { viewModel.resume(transfer.id) },
@@ -245,7 +240,6 @@ fun TransfersScreen(
             section("failed", failedTitle, state.failed, state.failedTotal) { transfer ->
                 TransferRow(
                     transfer = transfer,
-                    progressBarStyle = state.progressBarStyle,
                     primaryIcon = Icons.Filled.Refresh,
                     primaryLabel = stringResource(Res.string.common_retry),
                     onPrimary = { viewModel.retry(transfer.id) },
@@ -253,7 +247,7 @@ fun TransfersScreen(
                 )
             }
             section("finished", finishedTitle, state.completed, state.completedTotal) { transfer ->
-                TransferRow(transfer = transfer, progressBarStyle = state.progressBarStyle)
+                TransferRow(transfer = transfer)
             }
         }
     }
@@ -339,7 +333,6 @@ private fun transferRate(transfer: TransferTask): String {
 @Composable
 private fun TransferRow(
     transfer: TransferTask,
-    progressBarStyle: ProgressBarStyle,
     primaryIcon: ImageVector? = null,
     primaryLabel: String? = null,
     onPrimary: (() -> Unit)? = null,
@@ -391,7 +384,6 @@ private fun TransferRow(
                 Spacer(Modifier.height(10.dp))
                 ChunkProgressBar(
                     progress = transfer.progress,
-                    style = progressBarStyle,
                     chunkCount = FileParts.countFor(transfer.sizeBytes),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -450,64 +442,14 @@ private fun TransferRow(
 @Composable
 private fun ChunkProgressBar(
     progress: Float,
-    style: ProgressBarStyle,
     chunkCount: Int,
     modifier: Modifier = Modifier
 ) {
-    val trackColor = MaterialTheme.colorScheme.surfaceVariant
-    val progressColor = MaterialTheme.colorScheme.primary
-    val markerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
-    Canvas(modifier = modifier.height(18.dp)) {
-        val radius = size.height / 2f
-        val filledWidth = size.width * progress.coerceIn(0f, 1f)
-        drawRoundRect(
-            color = trackColor,
-            cornerRadius = androidx.compose.ui.geometry.CornerRadius(radius, radius)
-        )
-        if (filledWidth > 0f) {
-            if (style == ProgressBarStyle.STRAIGHT) {
-                drawRoundRect(
-                    color = progressColor,
-                    size = androidx.compose.ui.geometry.Size(filledWidth, size.height),
-                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(radius, radius)
-                )
-            } else {
-                val path = Path()
-                val waveHeight = size.height * 0.22f
-                val mid = size.height / 2f
-                val step = 18.dp.toPx()
-                path.moveTo(0f, mid)
-                var x = 0f
-                while (x < filledWidth) {
-                    val next = (x + step).coerceAtMost(filledWidth)
-                    path.quadraticTo((x + next) / 2f, mid - waveHeight, next, mid)
-                    x = next
-                }
-                clipRect(right = filledWidth) {
-                    drawPath(
-                        path = path,
-                        color = progressColor,
-                        style = androidx.compose.ui.graphics.drawscope.Stroke(
-                            width = size.height * 0.62f,
-                            cap = StrokeCap.Round
-                        )
-                    )
-                }
-            }
-        }
-        if (chunkCount > 1) {
-            for (index in 1 until chunkCount) {
-                val x = size.width * index / chunkCount
-                drawLine(
-                    color = markerColor,
-                    start = androidx.compose.ui.geometry.Offset(x, 2.dp.toPx()),
-                    end = androidx.compose.ui.geometry.Offset(x, size.height - 2.dp.toPx()),
-                    strokeWidth = 2.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
-            }
-        }
-    }
+    LinearWavyProgressIndicator(
+        progress = { progress },
+        amplitude = { 1f },
+        modifier = modifier
+    )
 }
 
 private fun chunkLabel(transfer: TransferTask): String {

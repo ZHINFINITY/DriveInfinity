@@ -79,7 +79,6 @@ import com.infinity.drive.domain.model.BackupSessionStatus
 import com.infinity.drive.domain.model.FileSortField
 import com.infinity.drive.domain.model.SortDirection
 import com.infinity.drive.domain.model.StorageSlice
-import com.infinity.drive.domain.model.ProgressBarStyle
 import com.infinity.drive.presentation.collection.CollectionType
 import com.infinity.drive.presentation.common.AgeBucket
 import com.infinity.drive.presentation.common.CollectSnackbarMessages
@@ -654,7 +653,6 @@ private fun BackupCard(
                         Spacer(Modifier.height(12.dp))
                         HomeProgressBar(
                             progress = session.progress,
-                            style = state.progressBarStyle,
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(Modifier.height(6.dp))
@@ -677,11 +675,7 @@ private fun BackupCard(
             ) {
                 Column {
                     Spacer(Modifier.height(12.dp))
-                    if (state.progressBarStyle == ProgressBarStyle.WAVY) {
-                        LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
-                    } else {
-                        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                    }
+                    LinearWavyProgressIndicator(modifier = Modifier.fillMaxWidth())
                 }
             }
             AnimatedVisibility(
@@ -729,18 +723,13 @@ private fun BackupCard(
 @Composable
 private fun HomeProgressBar(
     progress: Float,
-    style: ProgressBarStyle,
     modifier: Modifier = Modifier
 ) {
-    if (style == ProgressBarStyle.WAVY) {
-        LinearWavyProgressIndicator(
-            progress = { progress },
-            amplitude = { 1f },
-            modifier = modifier
-        )
-    } else {
-        LinearProgressIndicator(progress = { progress }, modifier = modifier)
-    }
+    LinearWavyProgressIndicator(
+        progress = { progress },
+        amplitude = { 1f },
+        modifier = modifier
+    )
 }
 
 @Composable

@@ -101,10 +101,6 @@ class SettingsRepositoryImpl(
             theme = enumOrDefault(this[PreferenceKeys.THEME], defaults.theme),
             language = AppLanguage.fromCode(this[PreferenceKeys.LANGUAGE]),
             dynamicColor = this[PreferenceKeys.DYNAMIC_COLOR] ?: defaults.dynamicColor,
-            progressBarStyle = enumOrDefault(
-                this[PreferenceKeys.PROGRESS_BAR_STYLE],
-                defaults.progressBarStyle
-            ),
             viewMode = enumOrDefault(this[PreferenceKeys.VIEW_MODE], defaults.viewMode),
             galleryViewMode = enumOrDefault(
                 this[PreferenceKeys.GALLERY_VIEW_MODE],
@@ -188,7 +184,6 @@ class SettingsRepositoryImpl(
         this[PreferenceKeys.THEME] = prefs.theme.name
         this[PreferenceKeys.LANGUAGE] = prefs.language.code
         this[PreferenceKeys.DYNAMIC_COLOR] = prefs.dynamicColor
-        this[PreferenceKeys.PROGRESS_BAR_STYLE] = prefs.progressBarStyle.name
         this[PreferenceKeys.VIEW_MODE] = prefs.viewMode.name
         this[PreferenceKeys.GALLERY_VIEW_MODE] = prefs.galleryViewMode.name
         this[PreferenceKeys.GALLERY_GRID_SIZE] = prefs.galleryGridSize
