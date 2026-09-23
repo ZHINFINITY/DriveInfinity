@@ -215,6 +215,10 @@ Issues and pull requests are welcome. Keep the dependency rule intact, match the
 surrounding code style, and add tests for changes in the domain or crypto
 packages of `shared/`.
 
+## Credits
+
+DriveInfinity is derived from the original work by **Mahmudul Hasan Khan**
+(GitHub: [Mahmud0808](https://github.com/Mahmud0808), also known as
 ## License
 
 [Apache License 2.0](LICENSE).
