@@ -19,11 +19,35 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      - name: Validate release identity and branding
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(grep '^appVersion = ' gradle/libs.versions.toml | cut -d'"'"' -f2)" = "1.0.0"
+          test "$(grep '^appVersionCode = ' gradle/libs.versions.toml | cut -d'"'"' -f2)" = "100"
+          if git grep -n -i -E 'teledrive|tele drive|dr\.disagree|mpv∞|mpvinfinity'; then
+            echo "Legacy branding found in tracked source."
+            exit 1
+          fi
+
+      - name: Prepare Android signing keystore
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${{ secrets.DRIVE_KEYSTORE_B64 }}"
+          echo "${{ secrets.DRIVE_KEYSTORE_B64 }}" | base64 --decode > "$RUNNER_TEMP/drive-infinity-release.jks"
+          chmod 600 "$RUNNER_TEMP/drive-infinity-release.jks"
+
       - name: Build FFmpeg audio decoder
         uses: ./.github/actions/build-ffmpeg-decoder
 
       - name: Assemble release APKs
         run: ./gradlew :android:assembleRelease -PwithFfmpegDecoder
+        env:
+          KEYSTORE_FILE: ${{ runner.temp }}/drive-infinity-release.jks
+          KEYSTORE_PASSWORD: ${{ secrets.DRIVE_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.DRIVE_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.DRIVE_KEY_PASSWORD }}
 
       - uses: actions/upload-artifact@v4
         with:
