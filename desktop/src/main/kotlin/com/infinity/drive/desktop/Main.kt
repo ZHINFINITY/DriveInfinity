@@ -118,7 +118,7 @@ fun main() {
             val systemDark = isSystemInDarkTheme()
             val darkTitleBar = when (theme) {
                 AppTheme.LIGHT -> false
-                AppTheme.DARK -> true
+                AppTheme.DARK, AppTheme.AMOLED -> true
                 AppTheme.SYSTEM -> systemDark
             }
             LaunchedEffect(darkTitleBar) { WindowsTitleBar.setDark(window, darkTitleBar) }
