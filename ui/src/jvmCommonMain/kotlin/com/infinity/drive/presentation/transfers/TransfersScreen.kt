@@ -1,6 +1,8 @@
 package com.infinity.drive.presentation.transfers
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +30,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearWavyProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -85,6 +88,8 @@ import com.infinity.drive.domain.model.TransferStage
 import com.infinity.drive.domain.model.TransferState
 import com.infinity.drive.domain.model.TransferTask
 import com.infinity.drive.domain.model.TransferType
+import com.infinity.drive.domain.model.ProgressBarStyle
+import com.infinity.drive.core.transfer.FileParts
 import com.infinity.drive.presentation.common.Formatters
 import com.infinity.drive.presentation.common.add
 import com.infinity.drive.presentation.components.ConfirmDialog
@@ -219,6 +224,7 @@ fun TransfersScreen(
             section("active", activeTitle, state.active, state.activeTotal) { transfer ->
                 TransferRow(
                     transfer = transfer,
+                    progressBarStyle = state.progressBarStyle,
                     primaryIcon = Icons.Filled.Pause,
                     primaryLabel = stringResource(Res.string.common_pause),
                     onPrimary = { viewModel.pause(transfer.id) },
@@ -228,6 +234,7 @@ fun TransfersScreen(
             section("paused", pausedTitle, state.paused, state.pausedTotal) { transfer ->
                 TransferRow(
                     transfer = transfer,
+                    progressBarStyle = state.progressBarStyle,
                     primaryIcon = Icons.Filled.PlayArrow,
                     primaryLabel = stringResource(Res.string.common_resume),
                     onPrimary = { viewModel.resume(transfer.id) },
@@ -237,6 +244,7 @@ fun TransfersScreen(
             section("failed", failedTitle, state.failed, state.failedTotal) { transfer ->
                 TransferRow(
                     transfer = transfer,
+                    progressBarStyle = state.progressBarStyle,
                     primaryIcon = Icons.Filled.Refresh,
                     primaryLabel = stringResource(Res.string.common_retry),
                     onPrimary = { viewModel.retry(transfer.id) },
@@ -244,7 +252,7 @@ fun TransfersScreen(
                 )
             }
             section("finished", finishedTitle, state.completed, state.completedTotal) { transfer ->
-                TransferRow(transfer = transfer)
+                TransferRow(transfer = transfer, progressBarStyle = state.progressBarStyle)
             }
         }
     }
@@ -259,11 +267,23 @@ private fun LazyListScope.section(
 ) {
     if (transfers.isEmpty()) return
     item(key = "header-$sectionKey") {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(top = 8.dp, bottom = 2.dp)
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 2.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(Modifier.width(8.dp))
+            androidx.compose.material3.HorizontalDivider(
+                modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+            )
+        }
     }
     items(transfers, key = { "$sectionKey-${it.id}" }) { transfer ->
         content(transfer)
@@ -318,6 +338,7 @@ private fun transferRate(transfer: TransferTask): String {
 @Composable
 private fun TransferRow(
     transfer: TransferTask,
+    progressBarStyle: ProgressBarStyle,
     primaryIcon: ImageVector? = null,
     primaryLabel: String? = null,
     onPrimary: (() -> Unit)? = null,
@@ -367,9 +388,10 @@ private fun TransferRow(
                 transfer.state == TransferState.PAUSED
             ) {
                 Spacer(Modifier.height(10.dp))
-                LinearWavyProgressIndicator(
-                    progress = { transfer.progress },
-                    amplitude = { if (transfer.state == TransferState.RUNNING) 1f else 0f },
+                ChunkProgressBar(
+                    progress = transfer.progress,
+                    style = progressBarStyle,
+                    chunkCount = FileParts.countFor(transfer.sizeBytes),
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(Modifier.height(6.dp))
@@ -379,7 +401,7 @@ private fun TransferRow(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${Formatters.bytes(transfer.transferredBytes)} / ${Formatters.bytes(transfer.sizeBytes)} · ${Formatters.percent(transfer.progress)}",
+                        text = "${Formatters.bytes(transfer.transferredBytes)} / ${Formatters.bytes(transfer.sizeBytes)} · ${Formatters.percent(transfer.progress)} · ${chunkLabel(transfer)}",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -422,4 +444,51 @@ private fun TransferRow(
             }
         }
     }
+}
+
+@Composable
+private fun ChunkProgressBar(
+    progress: Float,
+    style: ProgressBarStyle,
+    chunkCount: Int,
+    modifier: Modifier = Modifier
+) {
+    val markerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f)
+    Box(modifier = modifier.height(10.dp)) {
+        if (style == ProgressBarStyle.WAVY) {
+            LinearWavyProgressIndicator(
+                progress = { progress },
+                amplitude = { 1f },
+                modifier = Modifier.fillMaxWidth()
+            )
+        } else {
+            LinearProgressIndicator(
+                progress = { progress },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        if (chunkCount > 1) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                for (index in 1 until chunkCount) {
+                    val x = size.width * index / chunkCount
+                    drawLine(
+                        color = markerColor,
+                        start = androidx.compose.ui.geometry.Offset(x, 0f),
+                        end = androidx.compose.ui.geometry.Offset(x, size.height),
+                        strokeWidth = 2.dp.toPx()
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun chunkLabel(transfer: TransferTask): String {
+    val total = FileParts.countFor(transfer.sizeBytes)
+    val completed = if (transfer.transferredBytes >= transfer.sizeBytes) {
+        total
+    } else {
+        ((transfer.transferredBytes / FileParts.PART_SIZE) + 1).toInt().coerceIn(1, total)
+    }
+    return "chunk $completed/$total"
 }

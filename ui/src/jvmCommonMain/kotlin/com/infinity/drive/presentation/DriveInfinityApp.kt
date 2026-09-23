@@ -369,9 +369,9 @@ private fun FloatingNavigationBar(
 
     Surface(
         shape = RoundedCornerShape(BAR_CORNER),
-        color = MaterialTheme.colorScheme.surfaceContainerHighest,
-        tonalElevation = 3.dp,
-        shadowElevation = 6.dp,
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        tonalElevation = 5.dp,
+        shadowElevation = 10.dp,
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.navigationBars)
             .padding(horizontal = BAR_MARGIN, vertical = BAR_MARGIN)
@@ -389,7 +389,7 @@ private fun FloatingNavigationBar(
                         .width(pillWidth)
                         .height(PILL_HEIGHT)
                         .background(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            color = MaterialTheme.colorScheme.primaryContainer,
                             shape = CircleShape
                         )
                 )

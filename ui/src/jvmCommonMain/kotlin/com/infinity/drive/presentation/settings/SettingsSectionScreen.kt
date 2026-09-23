@@ -86,6 +86,8 @@ import com.infinity.drive.resources.settings_compact_layout
 import com.infinity.drive.resources.settings_confirm_removing_lock
 import com.infinity.drive.resources.settings_debug_logging
 import com.infinity.drive.resources.settings_dynamic_color
+import com.infinity.drive.resources.settings_progress_bar
+import com.infinity.drive.resources.settings_progress_bar_summary
 import com.infinity.drive.resources.settings_encrypt_thumbnails
 import com.infinity.drive.resources.settings_encrypt_uploads
 import com.infinity.drive.resources.settings_encryption_stays_off
@@ -158,9 +160,11 @@ import com.infinity.drive.resources.theme_amoled
 import com.infinity.drive.resources.theme_labels
 import com.infinity.drive.resources.theme_light
 import com.infinity.drive.resources.theme_system
+import com.infinity.drive.resources.progress_bar_style_labels
 import com.infinity.drive.resources.trash_clear_labels
 import com.infinity.drive.core.telegram.TelegramConnectionState
 import com.infinity.drive.domain.model.AppTheme
+import com.infinity.drive.domain.model.ProgressBarStyle
 import com.infinity.drive.domain.model.LayoutDensity
 import com.infinity.drive.domain.model.ViewMode
 import com.infinity.drive.presentation.platform.LocalDownloadLocationConfigurable
@@ -908,6 +912,7 @@ private fun AppearanceSection(state: SettingsUiState, viewModel: SettingsViewMod
     val prefs = state.preferences
     val capabilities = LocalPlatformCapabilities.current
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showProgressBarDialog by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
 
     if (showThemeDialog) {
@@ -936,6 +941,21 @@ private fun AppearanceSection(state: SettingsUiState, viewModel: SettingsViewMod
         )
     }
 
+    if (showProgressBarDialog) {
+        ChoiceDialog(
+            title = stringResource(Res.string.settings_progress_bar),
+            options = ProgressBarStyle.entries.zip(
+                stringArrayResource(Res.array.progress_bar_style_labels)
+            ),
+            selected = prefs.progressBarStyle,
+            onSelect = { choice ->
+                showProgressBarDialog = false
+                viewModel.update { it.copy(progressBarStyle = choice) }
+            },
+            onDismiss = { showProgressBarDialog = false }
+        )
+    }
+
     SettingsGroup {
         add {
             SettingsClickRow(
@@ -959,6 +979,13 @@ private fun AppearanceSection(state: SettingsUiState, viewModel: SettingsViewMod
                     AppLanguage.PORTUGUESE_BR -> stringResource(Res.string.language_portuguese_br)
                 },
                 onClick = { showLanguageDialog = true }
+            )
+        }
+        add {
+            SettingsClickRow(
+                title = stringResource(Res.string.settings_progress_bar),
+                subtitle = stringResource(Res.string.settings_progress_bar_summary),
+                onClick = { showProgressBarDialog = true }
             )
         }
         add(visible = capabilities.supportsDynamicColor) {

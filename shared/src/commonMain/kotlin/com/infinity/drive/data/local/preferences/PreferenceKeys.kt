@@ -36,6 +36,7 @@ object PreferenceKeys {
     val THEME = stringPreferencesKey("theme")
     val LANGUAGE = stringPreferencesKey("language")
     val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
+    val PROGRESS_BAR_STYLE = stringPreferencesKey("progress_bar_style")
     val VIEW_MODE = stringPreferencesKey("view_mode")
     val GRID_SIZE = intPreferencesKey("grid_size")
     val GALLERY_VIEW_MODE = stringPreferencesKey("gallery_view_mode")
