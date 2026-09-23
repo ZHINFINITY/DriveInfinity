@@ -25,7 +25,7 @@ jobs:
           set -euo pipefail
           grep -q '^appVersion = "1.0.0"$' gradle/libs.versions.toml
           grep -q '^appVersionCode = "100"$' gradle/libs.versions.toml
-          if git grep -n -i -E 'teledrive|tele drive|dr\.disagree|mpv∞|mpvinfinity'; then
+          if git grep -n -i -E 'teledrive|tele drive|dr\.disagree|mpv∞|mpvinfinity' -- ':!.github/workflows/release.yml'; then
             echo "Legacy branding found in tracked source."
             exit 1
           fi
