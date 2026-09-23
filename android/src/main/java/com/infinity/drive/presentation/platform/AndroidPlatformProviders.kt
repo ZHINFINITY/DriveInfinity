@@ -2,6 +2,7 @@ package com.infinity.drive.presentation.platform
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Environment
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -15,11 +16,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
 import com.infinity.drive.BuildConfig
 import com.infinity.drive.R
 import com.infinity.drive.core.files.DocumentTreePaths
@@ -176,12 +177,13 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
     val standardFolders = remember {
         StandardBackupFolder.entries.map { StandardFolderOption(it.labelRes, it.path) }
     }
+    val aboutIcon = remember(context) {
+        BitmapFactory.decodeResource(context.resources, R.drawable.about_icon)?.asImageBitmap()
+    }
     val appIcon: @Composable (Modifier) -> Unit = { modifier ->
-        Image(
-            painter = painterResource(R.drawable.about_icon),
-            contentDescription = null,
-            modifier = modifier
-        )
+        aboutIcon?.let { bitmap ->
+            Image(bitmap = bitmap, contentDescription = null, modifier = modifier)
+        }
     }
 
     val externalStorageRoot = remember {
