@@ -826,16 +826,9 @@
     <string name="about_check_updates">Проверить обновления</string>
     <string name="about_check_updates_summary">Сравнивает эту сборку с последним релизом</string>
     <string name="about_checking">Проверка…</string>
-    <string name="about_support">Поддержать проект</string>
-    <string name="about_support_summary">Поддержать проект через Ko-fi</string>
     <string name="about_no_update">У вас установлена последняя версия</string>
-    <string name="about_section_project">Проект</string>
     <string name="about_section_updates">Обновления</string>
-    <string name="about_source_code">Исходный код</string>
-    <string name="about_source_code_summary">Посмотреть проект на GitHub</string>
     <string name="about_tagline">Ваше собственное облако, сохраненное в приватном канале Telegram.</string>
-    <string name="about_telegram">Telegram канал</string>
-    <string name="about_telegram_summary">Анонсы релизов и обсуждение</string>
     <string name="about_update_download">Скачать</string>
     <string name="about_update_from">Установлена %1$s, доступна %2$s</string>
     <string name="about_update_later">Позже</string>

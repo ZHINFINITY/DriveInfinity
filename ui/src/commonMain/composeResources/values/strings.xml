@@ -804,15 +804,9 @@
     <string name="about_check_updates">Check for updates</string>
     <string name="about_check_updates_summary">Compares this build with the latest release</string>
     <string name="about_checking">Checking…</string>
-    <string name="about_support_summary">Support the project via Ko-fi</string>
     <string name="about_no_update">You are on the latest version</string>
-    <string name="about_section_project">Project</string>
     <string name="about_section_updates">Updates</string>
-    <string name="about_source_code">Source code</string>
-    <string name="about_source_code_summary">Browse the project on GitHub</string>
     <string name="about_tagline">Your own cloud drive, stored in a private Telegram channel.</string>
-    <string name="about_telegram">Telegram channel</string>
-    <string name="about_telegram_summary">Release announcements and discussion</string>
     <string name="about_update_download">Download</string>
     <string name="about_update_from">Installed %1$s, available %2$s</string>
     <string name="about_update_later">Later</string>

@@ -804,16 +804,9 @@
     <string name="about_check_updates">Verificar se há atualizações</string>
     <string name="about_check_updates_summary">Compara esta compilação com a versão mais recente</string>
     <string name="about_checking">Verificando…</string>
-    <string name="about_support">Pagar um café</string>
-    <string name="about_support_summary">Apoie o trabalho por trás do aplicativo</string>
     <string name="about_no_update">Você está na versão mais recente</string>
-    <string name="about_section_project">Projeto</string>
     <string name="about_section_updates">Atualizações</string>
-    <string name="about_source_code">Código-fonte</string>
-    <string name="about_source_code_summary">Veja o projeto no GitHub</string>
     <string name="about_tagline">Seu próprio drive em nuvem, armazenado em um canal privado do Telegram.</string>
-    <string name="about_telegram">Canal do Telegram</string>
-    <string name="about_telegram_summary">Anúncios de versões e discussões</string>
     <string name="about_update_download">Baixar</string>
     <string name="about_update_from">Instalada: %1$s; disponível: %2$s</string>
     <string name="about_update_later">Depois</string>
