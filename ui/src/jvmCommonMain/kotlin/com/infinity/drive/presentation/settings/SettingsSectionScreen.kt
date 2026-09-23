@@ -984,7 +984,9 @@ private fun AppearanceSection(state: SettingsUiState, viewModel: SettingsViewMod
         add {
             SettingsClickRow(
                 title = stringResource(Res.string.settings_progress_bar),
-                subtitle = stringResource(Res.string.settings_progress_bar_summary),
+                subtitle = stringArrayResource(Res.array.progress_bar_style_labels)
+                    .getOrElse(prefs.progressBarStyle.ordinal) { "" } +
+                        " · " + stringResource(Res.string.settings_progress_bar_summary),
                 onClick = { showProgressBarDialog = true }
             )
         }

@@ -29,8 +29,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearWavyProgressIndicator
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,6 +40,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.vector.ImageVector
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
@@ -453,31 +454,57 @@ private fun ChunkProgressBar(
     chunkCount: Int,
     modifier: Modifier = Modifier
 ) {
-    val markerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f)
-    Box(modifier = modifier.height(10.dp)) {
-        if (style == ProgressBarStyle.WAVY) {
-            LinearWavyProgressIndicator(
-                progress = { progress },
-                amplitude = { 1f },
-                modifier = Modifier.fillMaxWidth()
-            )
-        } else {
-            LinearProgressIndicator(
-                progress = { progress },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        if (chunkCount > 1) {
-            Canvas(modifier = Modifier.fillMaxSize()) {
-                for (index in 1 until chunkCount) {
-                    val x = size.width * index / chunkCount
-                    drawLine(
-                        color = markerColor,
-                        start = androidx.compose.ui.geometry.Offset(x, 0f),
-                        end = androidx.compose.ui.geometry.Offset(x, size.height),
-                        strokeWidth = 2.dp.toPx()
+    val trackColor = MaterialTheme.colorScheme.surfaceVariant
+    val progressColor = MaterialTheme.colorScheme.primary
+    val markerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+    Canvas(modifier = modifier.height(18.dp)) {
+        val radius = size.height / 2f
+        val filledWidth = size.width * progress.coerceIn(0f, 1f)
+        drawRoundRect(
+            color = trackColor,
+            cornerRadius = androidx.compose.ui.geometry.CornerRadius(radius, radius)
+        )
+        if (filledWidth > 0f) {
+            if (style == ProgressBarStyle.STRAIGHT) {
+                drawRoundRect(
+                    color = progressColor,
+                    size = androidx.compose.ui.geometry.Size(filledWidth, size.height),
+                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(radius, radius)
+                )
+            } else {
+                val path = Path()
+                val waveHeight = size.height * 0.22f
+                val mid = size.height / 2f
+                val step = 18.dp.toPx()
+                path.moveTo(0f, mid)
+                var x = 0f
+                while (x < filledWidth) {
+                    val next = (x + step).coerceAtMost(filledWidth)
+                    path.quadraticTo((x + next) / 2f, mid - waveHeight, next, mid)
+                    x = next
+                }
+                clipRect(right = filledWidth) {
+                    drawPath(
+                        path = path,
+                        color = progressColor,
+                        style = androidx.compose.ui.graphics.drawscope.Stroke(
+                            width = size.height * 0.62f,
+                            cap = StrokeCap.Round
+                        )
                     )
                 }
+            }
+        }
+        if (chunkCount > 1) {
+            for (index in 1 until chunkCount) {
+                val x = size.width * index / chunkCount
+                drawLine(
+                    color = markerColor,
+                    start = androidx.compose.ui.geometry.Offset(x, 2.dp.toPx()),
+                    end = androidx.compose.ui.geometry.Offset(x, size.height - 2.dp.toPx()),
+                    strokeWidth = 2.dp.toPx(),
+                    cap = StrokeCap.Round
+                )
             }
         }
     }
