@@ -27,7 +27,7 @@
     </queries>
 
     <application
-        android:name=".TeleDriveApplication"
+        android:name=".DriveInfinityApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
@@ -36,7 +36,7 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TeleDrive"
+        android:theme="@style/Theme.DriveInfinity"
         tools:replace="android:allowBackup"
         tools:targetApi="33">
 
@@ -45,7 +45,7 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|smallestScreenSize"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.TeleDrive"
+            android:theme="@style/Theme.DriveInfinity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

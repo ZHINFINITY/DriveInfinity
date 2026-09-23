@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.drdisagree.teledrive"
+    namespace = "com.infinity.drive"
     compileSdk {
         version = release(37)
     }

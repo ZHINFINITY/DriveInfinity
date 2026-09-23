@@ -1,6 +1,6 @@
 <resources>
     <!-- App-wide -->
-    <string name="app_name">TeleDrive</string>
+    <string name="app_name">DriveInfinity</string>
     <string name="app_backed_up">Загружено</string>
     <string name="app_drive_recreated">Ваш диск был удален в Telegram, поэтому был создан новый пустой диск</string>
     <string name="app_no_results">Нет результатов</string>
@@ -143,8 +143,8 @@
 
     <!-- App lock -->
     <string name="lock_no_screen_lock">Блокировка экрана недоступна на этом устройстве. Разблокировка.</string>
-    <string name="lock_prompt_title">Разблокировать TeleDrive</string>
-    <string name="lock_screen_title">TeleDrive заблокирован</string>
+    <string name="lock_prompt_title">Разблокировать DriveInfinity</string>
+    <string name="lock_screen_title">DriveInfinity заблокирован</string>
     <string name="lock_too_many_attempts">Слишком много попыток. Попробуйте позже.</string>
     <string name="lock_unlock">Разблокировать</string>
     <string name="session_broken_action">Войти снова</string>
@@ -171,7 +171,7 @@
     <string name="onboarding_api_id">API ID</string>
     <string name="onboarding_api_id_number">API ID должен быть числом</string>
     <string name="onboarding_choose_api_dev_tools">Выберите «API development tools» и создайте приложение. Подойдёт любое название.</string>
-    <string name="onboarding_copy_api_keys">Скопируйте api_id и api_hash в TeleDrive.</string>
+    <string name="onboarding_copy_api_keys">Скопируйте api_id и api_hash в DriveInfinity.</string>
     <string name="onboarding_get_api_keys">Получить ключи API</string>
     <string name="onboarding_my_telegram_org">my.telegram.org</string>
     <string name="onboarding_one_time_setup_keys">Однократная настройка. Ключи хранятся на устройстве в зашифрованном виде.</string>
@@ -235,7 +235,7 @@
     <string name="onboarding_allow_media">Разрешить доступ к медиа</string>
     <string name="onboarding_files_access_covers_documents">Доступ ко всем файлам включает документы, загрузки и SD-карту. Без него бэкап этих папок недоступен.</string>
     <string name="onboarding_storage_access">Доступ к хранилищу</string>
-    <string name="onboarding_teledrive_needs_media_files">TeleDrive требуется доступ к вашим файлам для резервного копирования и уведомления для отображения прогресса.</string>
+    <string name="onboarding_driveinfinity_needs_media_files">DriveInfinity требуется доступ к вашим файлам для резервного копирования и уведомления для отображения прогресса.</string>
 
     <!-- Onboarding: drive setup -->
     <string name="onboarding_channel_files_in_channel">Файлов в канале: %1$d</string>
@@ -244,7 +244,7 @@
     <string name="onboarding_drive_ready">Ваш диск готов</string>
     <string name="onboarding_looking_for_drives">Поиск ваших дисков</string>
     <string name="onboarding_no_drive_yet">Не удалось создать диск</string>
-    <string name="onboarding_pick_drive_desc">У вас уже есть диски TeleDrive. Выберите диск для открытия; переключить или добавить диски можно в Настройках.</string>
+    <string name="onboarding_pick_drive_desc">У вас уже есть диски DriveInfinity. Выберите диск для открытия; переключить или добавить диски можно в Настройках.</string>
     <string name="onboarding_single_drive_desc">Файлы сохраняются в этот приватный канал. Добавить другие диски можно позже в Настройках.</string>
 
     <!-- Onboarding: backup setup -->
@@ -543,7 +543,7 @@
 
     <!-- Drives and channels -->
     <string name="channels_channel_container">channel-container</string>
-    <string name="channels_create_one_teledrive_store">Создайте диск, и TeleDrive будет сохранять ваши файлы в этом приватном канале.</string>
+    <string name="channels_create_one_driveinfinity_store">Создайте диск, и DriveInfinity будет сохранять ваши файлы в этом приватном канале.</string>
     <string name="channels_creates_private_channel_account">Создает приватный канал в вашем аккаунте. Имя помогает различать диски.</string>
     <string name="channels_creating_drive">Создание диска</string>
     <string name="channels_delete_confirm_hint">Введите %1$s для подтверждения</string>
@@ -595,7 +595,7 @@
     <string name="settings_rebuild_index_telegram">Переиндексировать диск из Telegram</string>
     <string name="settings_removes_session_stored_api">Удаляет сессию и сохраненные ключи API</string>
     <string name="settings_restores_file_list">Восстанавливает список файлов из вашего канала хранения</string>
-    <string name="settings_shown_channels_private_owned">Отображаются приватные каналы, созданные вами с именем TeleDrive.</string>
+    <string name="settings_shown_channels_private_owned">Отображаются приватные каналы, созданные вами с именем DriveInfinity.</string>
     <string name="settings_state_connected">Подключено</string>
     <string name="settings_state_connecting">Подключение</string>
     <string name="settings_state_syncing">Синхронизация</string>
@@ -627,7 +627,7 @@
     <string name="settings_clear_cache_action">Очистить кэш</string>
     <string name="settings_clear_cache_title">Очистить кэш?</string>
     <string name="settings_download_location">Место скачивания</string>
-    <string name="settings_download_location_default">Загрузки/TeleDrive</string>
+    <string name="settings_download_location_default">Загрузки/DriveInfinity</string>
     <string name="settings_download_location_reset">Сбросить путь скачивания</string>
     <string name="settings_free_up_subtitle">%1$s загруженных файлов хранятся локально</string>
     <string name="settings_free_up_none">Нет загруженных файлов, занимающих локальную память</string>
@@ -797,7 +797,7 @@
     <!-- Permissions -->
     <string name="permission_all_files_rationale">Требуется для бэкапа документов, загрузок и папок на SD-карте</string>
     <string name="permission_all_files_title">Доступ ко всем файлам</string>
-    <string name="permission_missing_message">TeleDrive не может прочитать %1$s без разрешения.</string>
+    <string name="permission_missing_message">DriveInfinity не может прочитать %1$s без разрешения.</string>
     <string name="permission_not_allowed">Запрещено \u00b7 %1$s</string>
     <string name="permission_notifications_rationale">Показывает прогресс передач и бэкапа</string>
     <string name="permission_notifications_title">Уведомления</string>
@@ -825,8 +825,8 @@
     <string name="about_check_updates">Проверить обновления</string>
     <string name="about_check_updates_summary">Сравнивает эту сборку с последним релизом</string>
     <string name="about_checking">Проверка…</string>
-    <string name="about_donate">Угостить разработчика кофе</string>
-    <string name="about_donate_summary">Поддержать разработку приложения</string>
+    <string name="about_support">Поддержать проект</string>
+    <string name="about_support_summary">Поддержать проект через Ko-fi</string>
     <string name="about_no_update">У вас установлена последняя версия</string>
     <string name="about_section_project">Проект</string>
     <string name="about_section_updates">Обновления</string>

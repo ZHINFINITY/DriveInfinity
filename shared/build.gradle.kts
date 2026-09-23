@@ -13,7 +13,7 @@ kotlin {
     }
 
     android {
-        namespace = "com.drdisagree.teledrive.shared"
+        namespace = "com.infinity.drive.shared"
         compileSdk = 37
         minSdk = 26
     }

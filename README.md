@@ -13,15 +13,14 @@ Back up and browse your files using a private Telegram channel as storage.
 [![Downloads](https://img.shields.io/github/downloads/ZHINFINITY/DriveInfinity/total?style=for-the-badge&logo=github&logoColor=white&color=D97706)](https://github.com/ZHINFINITY/DriveInfinity/releases)
 [![License](https://img.shields.io/badge/license-Apache%202.0-6750A4?style=for-the-badge&logo=apache&logoColor=white)](LICENSE)
 <br><br>
-<a href="https://www.buymeacoffee.com/DrDisagree"><img src="https://raw.githubusercontent.com/Mahmud0808/ColorBlendr/master/.github/resources/bmc-button.png" width="30%" alt="Buy me a coffee" /></a>
 </div>
 
 ---
 
 ## About
 
-TeleDrive stores your files in a private Telegram channel on your own account.
-There is no TeleDrive server and no account to create with us. The app keeps a
+DriveInfinity stores your files in a private Telegram channel on your own account.
+There is no DriveInfinity server and no account to create with us. The app keeps a
 local index so browsing and search stay fast and work offline.
 
 One Compose Multiplatform codebase ships the Android app and the Windows
@@ -52,10 +51,10 @@ entire UI layer, and both browse the same drive.
 
 ### Windows
 
-Download `TeleDrive-<version>.msi` from the [releases page](../../releases) and
+Download `DriveInfinity-<version>.msi` from the [releases page](../../releases) and
 run it. It installs per user with no admin prompt, adds Start menu and desktop
 shortcuts, and uninstalls from Windows Settings. Your session and settings live
-in `%APPDATA%\TeleDrive` and survive reinstalls.
+in `%APPDATA%\DriveInfinity` and survive reinstalls.
 
 ### Android
 
@@ -64,11 +63,11 @@ architecture, so pick the one that matches your device:
 
 | APK | Use it when |
 | --- | --- |
-| `TeleDrive-<version>-arm64-v8a-release.apk` | Almost every phone from the last several years |
-| `TeleDrive-<version>-armeabi-v7a-release.apk` | Older 32-bit devices |
-| `TeleDrive-<version>-x86_64-release.apk` | 64-bit emulators and x86 Chromebooks |
-| `TeleDrive-<version>-x86-release.apk` | 32-bit x86, rare outside older emulators |
-| `TeleDrive-<version>-universal-release.apk` | You are unsure, or sideloading somewhere unusual |
+| `DriveInfinity-<version>-arm64-v8a-release.apk` | Almost every phone from the last several years |
+| `DriveInfinity-<version>-armeabi-v7a-release.apk` | Older 32-bit devices |
+| `DriveInfinity-<version>-x86_64-release.apk` | 64-bit emulators and x86 Chromebooks |
+| `DriveInfinity-<version>-x86-release.apk` | 32-bit x86, rare outside older emulators |
+| `DriveInfinity-<version>-universal-release.apk` | You are unsure, or sideloading somewhere unusual |
 
 The universal one carries every architecture at once, so prefer a specific build
 unless you need the fallback. Most of that size is TDLib, the official Telegram
@@ -84,7 +83,7 @@ library the app is built on.
 To get credentials: sign in at [my.telegram.org](https://my.telegram.org), open
 *API development tools*, and fill in an app name and short name. Anything
 sensible works, and the platform and description do not matter. The page then
-shows an **api_id** and an **api_hash**, which is what TeleDrive asks for on
+shows an **api_id** and an **api_hash**, which is what DriveInfinity asks for on
 first launch.
 
 You enter the API ID and hash at runtime and they are stored encrypted on
@@ -123,25 +122,25 @@ Point the build at a full JDK with a `desktopJavaHome` property in your global
 
 ```bash
 ./gradlew :desktop:packageMsi           # installer
-./gradlew :desktop:createDistributable  # portable folder with TeleDrive.exe
+./gradlew :desktop:createDistributable  # portable folder with DriveInfinity.exe
 ```
 
 ## Bringing existing files in
 
 Already have files sitting in a channel, a group, or Saved Messages? Forward
-them into the drive TeleDrive created and they appear in the app after the next
+them into the drive DriveInfinity created and they appear in the app after the next
 sync. Forwarding happens on Telegram's servers, so nothing is downloaded or
 uploaded again, and files of any size come across in seconds.
 
-Select the messages in the Telegram app, forward them to your TeleDrive
-channel, then pull to refresh in TeleDrive.
+Select the messages in the Telegram app, forward them to your DriveInfinity
+channel, then pull to refresh in DriveInfinity.
 
 What to expect for forwarded files:
 
 - Only messages sent **as documents** are picked up. A photo or video sent the
   normal way was compressed by Telegram into a media message, and those are
   skipped. Forward the original file version instead.
-- **Captions are replaced.** TeleDrive stores each file's name, folder and
+- **Captions are replaced.** DriveInfinity stores each file's name, folder and
   flags in the caption, so the first rename, move or trash overwrites whatever
   text the message carried.
 - **No checksum is recorded**, since the file is never read locally. Duplicate
@@ -192,7 +191,7 @@ set a hint when you create it and keep the passphrase out of the hint.
 
 - A file past Telegram's per-file cap is stored as several messages, so opening
   it in the Telegram app shows the parts rather than the whole file. Only
-  TeleDrive puts it back together.
+  DriveInfinity puts it back together.
 - Streaming authenticates the frames it plays, not the whole file. Downloading
   verifies everything, so use it when integrity matters more than starting fast.
 - Telegram cannot rename a document inside a sent message, so a rename updates
@@ -225,5 +224,5 @@ TDLib is BSL-1.0. The prebuilt Android wrapper (`tdlibx/td`) is Apache-2.0.
 ---
 
 <div align="center">
-<sub>TeleDrive is an independent project, not affiliated with or endorsed by Telegram.</sub>
+<sub>DriveInfinity is an independent project, not affiliated with or endorsed by Telegram.</sub>
 </div>

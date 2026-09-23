@@ -13,7 +13,7 @@ kotlin {
     }
 
     android {
-        namespace = "com.drdisagree.teledrive.ui"
+        namespace = "com.infinity.drive.ui"
         compileSdk = 37
         minSdk = 26
         experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
@@ -65,6 +65,6 @@ kotlin {
 }
 
 compose.resources {
-    packageOfResClass = "com.drdisagree.teledrive.resources"
+    packageOfResClass = "com.infinity.drive.resources"
     publicResClass = true
 }

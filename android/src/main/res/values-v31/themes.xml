@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.TeleDrive" parent="android:Theme.DeviceDefault.Light.NoActionBar">
+    <style name="Theme.DriveInfinity" parent="android:Theme.DeviceDefault.Light.NoActionBar">
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:windowSplashScreenBackground">@color/window_background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

@@ -13,9 +13,9 @@ body:
     attributes:
       label: Before reporting
       options:
-        - label: I searched [existing issues](https://github.com/Mahmud0808/TeleDrive/issues?q=is%3Aissue) and this is not a duplicate
+        - label: I searched [existing issues](https://github.com/ZHINFINITY/DriveInfinity/issues?q=is%3Aissue) and this is not a duplicate
           required: true
-        - label: I am on the latest [release](https://github.com/Mahmud0808/TeleDrive/releases/latest)
+        - label: I am on the latest [release](https://github.com/ZHINFINITY/DriveInfinity/releases/latest)
           required: true
 
   - type: textarea
@@ -92,7 +92,7 @@ body:
     id: restored
     attributes:
       label: Was this install restored or copied from another device
-      description: Root backup tools such as Swift Backup cannot carry the keys TeleDrive relies on.
+      description: Root backup tools such as Swift Backup cannot carry the keys DriveInfinity relies on.
       options:
         - "No, a normal install"
         - "Yes, restored with a backup tool"

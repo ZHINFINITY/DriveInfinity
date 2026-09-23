@@ -1,6 +1,6 @@
 <resources>
     <!-- App-wide -->
-    <string name="app_name">TeleDrive</string>
+    <string name="app_name">DriveInfinity</string>
     <string name="app_backed_up">Salvo em backup</string>
     <string name="app_drive_recreated">Seu drive foi excluído no Telegram, portanto um novo vazio foi criado</string>
     <string name="app_no_results">Nenhum resultado</string>
@@ -121,8 +121,8 @@
 
     <!-- App lock -->
     <string name="lock_no_screen_lock">O bloqueio de tela não está disponível neste dispositivo. Desbloqueando.</string>
-    <string name="lock_prompt_title">Desbloquear o TeleDrive</string>
-    <string name="lock_screen_title">O TeleDrive está bloqueado</string>
+    <string name="lock_prompt_title">Desbloquear o DriveInfinity</string>
+    <string name="lock_screen_title">O DriveInfinity está bloqueado</string>
     <string name="lock_too_many_attempts">Muitas tentativas. Tente novamente mais tarde.</string>
     <string name="lock_unlock">Desbloquear</string>
     <string name="session_broken_action">Entrar novamente</string>
@@ -149,7 +149,7 @@
     <string name="onboarding_api_id">ID da API</string>
     <string name="onboarding_api_id_number">O ID da API deve ser um número</string>
     <string name="onboarding_choose_api_dev_tools">Escolha &quot;API development tools&quot; e crie um app. Qualquer nome serve.</string>
-    <string name="onboarding_copy_api_keys">Copie o api_id e o api_hash no TeleDrive.</string>
+    <string name="onboarding_copy_api_keys">Copie o api_id e o api_hash no DriveInfinity.</string>
     <string name="onboarding_get_api_keys">Obtenha suas chaves de API</string>
     <string name="onboarding_my_telegram_org">my.telegram.org</string>
     <string name="onboarding_one_time_setup_keys">Configuração única. Suas chaves permanecem neste dispositivo, criptografadas.</string>
@@ -213,7 +213,7 @@
     <string name="onboarding_allow_media">Permitir acesso a mídia</string>
     <string name="onboarding_files_access_covers_documents">O acesso a todos os arquivos abrange documentos, downloads e pastas do cartão SD. Sem ele, essas pastas não poderão ser salvas em backup.</string>
     <string name="onboarding_storage_access">Acesso ao armazenamento</string>
-    <string name="onboarding_teledrive_needs_media_files">O TeleDrive precisa de acesso às suas mídias e arquivos para fazer o backup e de notificações para exibir o progresso das transferências.</string>
+    <string name="onboarding_driveinfinity_needs_media_files">O DriveInfinity precisa de acesso às suas mídias e arquivos para fazer o backup e de notificações para exibir o progresso das transferências.</string>
 
     <!-- Onboarding: drive setup -->
     <string name="onboarding_channel_files_in_channel">%1$d arquivos neste canal</string>
@@ -222,7 +222,7 @@
     <string name="onboarding_drive_ready">Seu drive está pronto</string>
     <string name="onboarding_looking_for_drives">Procurando seus drives</string>
     <string name="onboarding_no_drive_yet">Não foi possível criar um drive</string>
-    <string name="onboarding_pick_drive_desc">Sua conta já possui canais do TeleDrive. Escolha qual deseja abrir neste dispositivo; você pode alternar ou adicionar mais nas Configurações.</string>
+    <string name="onboarding_pick_drive_desc">Sua conta já possui canais do DriveInfinity. Escolha qual deseja abrir neste dispositivo; você pode alternar ou adicionar mais nas Configurações.</string>
     <string name="onboarding_single_drive_desc">Os arquivos são salvos em backup neste canal privado da sua conta. Você pode adicionar mais drives posteriormente nas Configurações.</string>
 
     <!-- Onboarding: backup setup -->
@@ -521,7 +521,7 @@
 
     <!-- Drives and channels -->
     <string name="channels_channel_container">contêiner-canal</string>
-    <string name="channels_create_one_teledrive_store">Crie um e o TeleDrive armazenará seus arquivos nesse canal privado.</string>
+    <string name="channels_create_one_driveinfinity_store">Crie um e o DriveInfinity armazenará seus arquivos nesse canal privado.</string>
     <string name="channels_creates_private_channel_account">Cria um canal privado na sua conta. O nome ajuda a distinguir seus drives.</string>
     <string name="channels_creating_drive">Criando drive</string>
     <string name="channels_delete_confirm_hint">Digite %1$s para confirmar</string>
@@ -573,7 +573,7 @@
     <string name="settings_rebuild_index_telegram">Reconstruir índice a partir do Telegram</string>
     <string name="settings_removes_session_stored_api">Remove a sessão e as credenciais da API armazenadas</string>
     <string name="settings_restores_file_list">Restaura a lista de arquivos a partir do seu canal de armazenamento</string>
-    <string name="settings_shown_channels_private_owned">Os canais exibidos são privados, de sua propriedade e com o nome TeleDrive.</string>
+    <string name="settings_shown_channels_private_owned">Os canais exibidos são privados, de sua propriedade e com o nome DriveInfinity.</string>
     <string name="settings_state_connected">Conectado</string>
     <string name="settings_state_connecting">Conectando</string>
     <string name="settings_state_syncing">Sincronizando</string>
@@ -605,7 +605,7 @@
     <string name="settings_clear_cache_action">Limpar cache</string>
     <string name="settings_clear_cache_title">Limpar cache?</string>
     <string name="settings_download_location">Local de download</string>
-    <string name="settings_download_location_default">Downloads/TeleDrive</string>
+    <string name="settings_download_location_default">Downloads/DriveInfinity</string>
     <string name="settings_download_location_reset">Redefinir local de download</string>
     <string name="settings_free_up_subtitle">%1$s de arquivos com backup ocupando espaço local</string>
     <string name="settings_free_up_none">Nenhum arquivo com backup está ocupando espaço local</string>
@@ -775,7 +775,7 @@
     <!-- Permissions -->
     <string name="permission_all_files_rationale">Necessário para fazer backup de documentos, downloads e pastas do cartão SD</string>
     <string name="permission_all_files_title">Acesso a todos os arquivos</string>
-    <string name="permission_missing_message">O TeleDrive não pode ler %1$s sem permissão.</string>
+    <string name="permission_missing_message">O DriveInfinity não pode ler %1$s sem permissão.</string>
     <string name="permission_not_allowed">Não permitido \u00b7 %1$s</string>
     <string name="permission_notifications_rationale">Exibe o progresso de transferências e backups</string>
     <string name="permission_notifications_title">Notificações</string>
@@ -803,8 +803,8 @@
     <string name="about_check_updates">Verificar se há atualizações</string>
     <string name="about_check_updates_summary">Compara esta compilação com a versão mais recente</string>
     <string name="about_checking">Verificando…</string>
-    <string name="about_donate">Pagar um café</string>
-    <string name="about_donate_summary">Apoie o trabalho por trás do aplicativo</string>
+    <string name="about_support">Pagar um café</string>
+    <string name="about_support_summary">Apoie o trabalho por trás do aplicativo</string>
     <string name="about_no_update">Você está na versão mais recente</string>
     <string name="about_section_project">Projeto</string>
     <string name="about_section_updates">Atualizações</string>

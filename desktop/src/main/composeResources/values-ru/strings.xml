@@ -1,7 +1,7 @@
 <resources>
     <!-- App-wide -->
-    <string name="app_name">TeleDrive</string>
-    <string name="app_already_running">TeleDrive уже запущен.</string>
+    <string name="app_name">DriveInfinity</string>
+    <string name="app_already_running">DriveInfinity уже запущен.</string>
 
     <!-- Navigation -->
     <string name="nav_files">Файлы</string>
