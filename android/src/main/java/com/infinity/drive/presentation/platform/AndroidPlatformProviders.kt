@@ -111,17 +111,8 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
 
     val multiCallback = remember { CallbackHolder<List<String>>() }
     val multiLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val data = result.data
-        val uris = buildList {
-            data?.clipData?.let { clips ->
-                repeat(clips.itemCount) { index -> add(clips.getItemAt(index).uri) }
-            }
-            data?.data?.let { single ->
-                if (none { it == single }) add(single)
-            }
-        }
+        ActivityResultContracts.OpenMultipleDocuments()
+    ) { uris ->
         uris.forEach { uri ->
             runCatching {
                 context.contentResolver.takePersistableUriPermission(
@@ -136,17 +127,7 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
         MultiFilePicker { onPicked ->
             multiCallback.arm(onPicked)
             runCatching {
-                multiLauncher.launch(
-                    Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                        addCategory(Intent.CATEGORY_OPENABLE)
-                        type = "*/*"
-                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                        addFlags(
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-                        )
-                    }
-                )
+                multiLauncher.launch(arrayOf("*/*"))
             }.onFailure {
                 multiCallback.fire(emptyList())
             }
