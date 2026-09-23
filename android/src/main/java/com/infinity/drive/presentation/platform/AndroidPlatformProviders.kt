@@ -178,7 +178,7 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
     }
     val appIcon: @Composable (Modifier) -> Unit = { modifier ->
         Image(
-            painter = painterResource(R.mipmap.ic_launcher),
+            painter = painterResource(R.drawable.about_icon),
             contentDescription = null,
             modifier = modifier
         )
