@@ -30,6 +30,7 @@ import com.infinity.drive.domain.model.TransferState
 import com.infinity.drive.domain.model.TransferType
 import com.infinity.drive.domain.repository.SettingsRepository
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
@@ -108,6 +109,10 @@ class TransferExecutor(
         }
     } catch (_: KeyUnavailableException) {
         Outcome.Failed(messages.keyMissing)
+    } catch (_: CancellationException) {
+        throw CancellationException("Transfer ${transfer.id} was cancelled")
+    } catch (error: Throwable) {
+        Outcome.Failed(error.message ?: messages.uploadEnded)
     }
 
     private suspend fun executeUpload(transfer: TransferEntity): Outcome {

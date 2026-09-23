@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Autorenew
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LoadingIndicator
@@ -28,11 +30,17 @@ import com.infinity.drive.resources.about_auto_check_summary
 import com.infinity.drive.resources.about_check_updates
 import com.infinity.drive.resources.about_check_updates_summary
 import com.infinity.drive.resources.about_checking
+import com.infinity.drive.resources.about_support
+import com.infinity.drive.resources.about_support_summary
+import com.infinity.drive.resources.about_section_project
 import com.infinity.drive.resources.about_section_updates
+import com.infinity.drive.resources.about_source_code
+import com.infinity.drive.resources.about_source_code_summary
 import com.infinity.drive.resources.about_tagline
 import com.infinity.drive.resources.about_update_ready
 import com.infinity.drive.resources.about_version
 import com.infinity.drive.resources.app_name
+import com.infinity.drive.core.update.AppLinks
 import com.infinity.drive.presentation.platform.LocalAppIcon
 import com.infinity.drive.presentation.platform.LocalAppVersion
 import com.infinity.drive.presentation.platform.LocalUrlOpener
@@ -105,6 +113,26 @@ fun AboutSection(state: SettingsUiState, viewModel: SettingsViewModel) {
                 onChange = { value ->
                     viewModel.update { it.copy(updateCheckEnabled = value) }
                 }
+            )
+        }
+    }
+
+    SettingsSectionTitle(stringResource(Res.string.about_section_project))
+    SettingsGroup {
+        add {
+            SettingsClickRow(
+                title = stringResource(Res.string.about_source_code),
+                icon = Icons.Filled.Code,
+                subtitle = stringResource(Res.string.about_source_code_summary),
+                onClick = { urlOpener.open(AppLinks.REPOSITORY) }
+            )
+        }
+        add {
+            SettingsClickRow(
+                title = stringResource(Res.string.about_support),
+                icon = Icons.Filled.Favorite,
+                subtitle = stringResource(Res.string.about_support_summary),
+                onClick = { urlOpener.open(AppLinks.DONATE) }
             )
         }
     }

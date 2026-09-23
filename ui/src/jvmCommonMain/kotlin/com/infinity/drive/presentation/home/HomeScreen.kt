@@ -133,6 +133,10 @@ import com.infinity.drive.resources.home_section_favorites
 import com.infinity.drive.resources.home_section_recent
 import com.infinity.drive.resources.home_section_storage
 import com.infinity.drive.resources.home_session_progress
+import com.infinity.drive.resources.home_stat_backed_up
+import com.infinity.drive.resources.home_stat_failed
+import com.infinity.drive.resources.home_stat_files
+import com.infinity.drive.resources.home_stat_pending
 import com.infinity.drive.resources.home_status_connected
 import com.infinity.drive.resources.home_status_connecting
 import com.infinity.drive.resources.home_status_offline
@@ -575,6 +579,32 @@ private fun BackupCard(
                     )
                 }
             }
+            Spacer(Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                BackupStat(
+                    value = state.totalFiles.toString(),
+                    label = stringResource(Res.string.home_stat_files),
+                    modifier = Modifier.weight(1f)
+                )
+                BackupStat(
+                    value = state.backedUpCount.toString(),
+                    label = stringResource(Res.string.home_stat_backed_up),
+                    modifier = Modifier.weight(1f)
+                )
+                BackupStat(
+                    value = state.pendingCount.toString(),
+                    label = stringResource(Res.string.home_stat_pending),
+                    modifier = Modifier.weight(1f)
+                )
+                BackupStat(
+                    value = state.failedCount.toString(),
+                    label = stringResource(Res.string.home_stat_failed),
+                    modifier = Modifier.weight(1f)
+                )
+            }
             var lastSession by remember { mutableStateOf(state.activeBackup) }
             state.activeBackup?.let { lastSession = it }
             AnimatedVisibility(
@@ -689,6 +719,31 @@ private fun BackupCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun BackupStat(value: String, label: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .clip(MaterialTheme.shapes.medium)
+            .background(MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.08f))
+            .padding(horizontal = 8.dp, vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            maxLines = 1
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 

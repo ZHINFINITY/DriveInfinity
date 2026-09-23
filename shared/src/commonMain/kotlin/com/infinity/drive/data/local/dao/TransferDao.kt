@@ -109,8 +109,12 @@ interface TransferDao {
     )
 
     /** Recovers transfers that were RUNNING when the process died. */
-    @Query("UPDATE transfers SET state = 'QUEUED', telegramFileId = NULL WHERE state = 'RUNNING'")
-    suspend fun requeueRunning()
+    @Query(
+        """UPDATE transfers SET state = 'QUEUED', telegramFileId = NULL,
+           stage = NULL, speedBytesPerSecond = 0, errorMessage = NULL,
+           updatedAt = :now WHERE state = 'RUNNING'"""
+    )
+    suspend fun requeueRunning(now: Long)
 
     @Query("DELETE FROM transfers WHERE id IN (:ids)")
     suspend fun deleteByIds(ids: List<String>)

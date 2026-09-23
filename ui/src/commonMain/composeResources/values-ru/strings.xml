@@ -284,6 +284,10 @@
     <string name="home_section_recent">Недавние</string>
     <string name="home_section_storage">Хранилище</string>
     <string name="home_session_progress">Файлов: %1$d из %2$d</string>
+    <string name="home_stat_files">Файлы</string>
+    <string name="home_stat_backed_up">Сохранено</string>
+    <string name="home_stat_pending">В очереди</string>
+    <string name="home_stat_failed">Ошибки</string>
     <string name="home_status_connected">Подключено</string>
     <string name="home_status_connecting">Подключение…</string>
     <string name="home_status_offline">Офлайн</string>
@@ -826,8 +830,13 @@
     <string name="about_check_updates">Проверить обновления</string>
     <string name="about_check_updates_summary">Сравнивает эту сборку с последним релизом</string>
     <string name="about_checking">Проверка…</string>
+    <string name="about_support">Поддержать DriveInfinity</string>
+    <string name="about_support_summary">Поддержать проект через Ko-fi</string>
     <string name="about_no_update">У вас установлена последняя версия</string>
+    <string name="about_section_project">DriveInfinity</string>
     <string name="about_section_updates">Обновления</string>
+    <string name="about_source_code">DriveInfinity на GitHub</string>
+    <string name="about_source_code_summary">Открыть репозиторий DriveInfinity</string>
     <string name="about_tagline">Ваше собственное облако, сохраненное в приватном канале Telegram.</string>
     <string name="about_update_download">Скачать</string>
     <string name="about_update_from">Установлена %1$s, доступна %2$s</string>

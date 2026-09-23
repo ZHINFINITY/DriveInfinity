@@ -362,23 +362,6 @@ private fun TransferRow(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-                if (primaryIcon != null && onPrimary != null) {
-                    IconButton(onClick = onPrimary) {
-                        Icon(primaryIcon, contentDescription = primaryLabel)
-                    }
-                }
-                if (onCancel != null) {
-                    IconButton(onClick = onCancel) {
-                        Icon(
-                            imageVector = Icons.Filled.Cancel,
-                            contentDescription = if (transfer.state.isTerminal) {
-                                stringResource(Res.string.common_dismiss)
-                            } else {
-                                stringResource(Res.string.common_cancel)
-                            }
-                        )
-                    }
-                }
             }
             if (transfer.state == TransferState.RUNNING ||
                 transfer.state == TransferState.PAUSED
@@ -396,7 +379,7 @@ private fun TransferRow(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = Formatters.percent(transfer.progress),
+                        text = "${Formatters.bytes(transfer.transferredBytes)} / ${Formatters.bytes(transfer.sizeBytes)} · ${Formatters.percent(transfer.progress)}",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -409,6 +392,32 @@ private fun TransferRow(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1
                     )
+                }
+            }
+            if (primaryIcon != null && onPrimary != null || onCancel != null) {
+                Spacer(Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (primaryIcon != null && onPrimary != null) {
+                        IconButton(onClick = onPrimary) {
+                            Icon(primaryIcon, contentDescription = primaryLabel)
+                        }
+                    }
+                    if (onCancel != null) {
+                        IconButton(onClick = onCancel) {
+                            Icon(
+                                imageVector = Icons.Filled.Cancel,
+                                contentDescription = if (transfer.state.isTerminal) {
+                                    stringResource(Res.string.common_dismiss)
+                                } else {
+                                    stringResource(Res.string.common_cancel)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }

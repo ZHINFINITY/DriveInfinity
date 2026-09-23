@@ -333,7 +333,7 @@ class TransferRepositoryImpl(
     }
 
     override suspend fun recoverOrphanedTransfers() {
-        transferDao.requeueRunning()
+        transferDao.requeueRunning(System.currentTimeMillis())
         syncFileStates()
         kickWorker()
     }

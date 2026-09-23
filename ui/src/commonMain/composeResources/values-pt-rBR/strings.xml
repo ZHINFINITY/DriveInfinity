@@ -262,6 +262,10 @@
     <string name="home_section_recent">Recentes</string>
     <string name="home_section_storage">Armazenamento</string>
     <string name="home_session_progress">%1$d de %2$d arquivos</string>
+    <string name="home_stat_files">Arquivos</string>
+    <string name="home_stat_backed_up">Salvos</string>
+    <string name="home_stat_pending">Pendentes</string>
+    <string name="home_stat_failed">Falhas</string>
     <string name="home_status_connected">Conectado</string>
     <string name="home_status_connecting">Conectando…</string>
     <string name="home_status_offline">Offline</string>
@@ -804,8 +808,13 @@
     <string name="about_check_updates">Verificar se há atualizações</string>
     <string name="about_check_updates_summary">Compara esta compilação com a versão mais recente</string>
     <string name="about_checking">Verificando…</string>
+    <string name="about_support">Apoiar o DriveInfinity</string>
+    <string name="about_support_summary">Apoie o projeto pelo Ko-fi</string>
     <string name="about_no_update">Você está na versão mais recente</string>
+    <string name="about_section_project">DriveInfinity</string>
     <string name="about_section_updates">Atualizações</string>
+    <string name="about_source_code">DriveInfinity no GitHub</string>
+    <string name="about_source_code_summary">Abrir o repositório do DriveInfinity</string>
     <string name="about_tagline">Seu próprio drive em nuvem, armazenado em um canal privado do Telegram.</string>
     <string name="about_update_download">Baixar</string>
     <string name="about_update_from">Instalada: %1$s; disponível: %2$s</string>

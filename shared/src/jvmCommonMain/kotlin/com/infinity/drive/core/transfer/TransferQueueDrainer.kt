@@ -71,7 +71,9 @@ class TransferQueueDrainer(
             }.joinAll()
         }
         if (interrupted) {
-            withContext(NonCancellable) { transferDao.requeueRunning() }
+            withContext(NonCancellable) {
+                transferDao.requeueRunning(System.currentTimeMillis())
+            }
             return TransferDrainResult.INTERRUPTED
         }
         return TransferDrainResult.COMPLETED
