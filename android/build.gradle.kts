@@ -46,6 +46,7 @@ android {
     }
     buildTypes {
         debug {
+            applicationIdSuffix = ".debug"
             if (ciKeystore != null) {
                 signingConfig = signingConfigs.getByName("release")
             }
