@@ -22,15 +22,7 @@ jobs:
       - name: Build FFmpeg audio decoder
         uses: ./.github/actions/build-ffmpeg-decoder
 
-      - name: Decode keystore
-        run: echo "${{ secrets.KEYSTORE }}" | base64 -d > "$RUNNER_TEMP/keystore.jks"
-
-      - name: Assemble signed release APKs
-        env:
-          KEYSTORE_FILE: ${{ runner.temp }}/keystore.jks
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      - name: Assemble release APKs
         run: ./gradlew :android:assembleRelease -PwithFfmpegDecoder
 
       - uses: actions/upload-artifact@v4
