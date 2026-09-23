@@ -111,13 +111,30 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
 
     val multiCallback = remember { CallbackHolder<List<String>>() }
     val multiLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetMultipleContents()
-    ) { uris -> multiCallback.fire(uris.map { it.toString() }) }
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val data = result.data
+        val uris = buildList {
+            data?.clipData?.let { clips ->
+                repeat(clips.itemCount) { index -> add(clips.getItemAt(index).uri) }
+            }
+            data?.data?.let { single ->
+                if (none { it == single }) add(single)
+            }
+        }
+        multiCallback.fire(uris.map { it.toString() })
+    }
     val multiFilePicker = remember {
         MultiFilePicker { onPicked ->
             multiCallback.arm(onPicked)
             runCatching {
-                multiLauncher.launch("*/*")
+                multiLauncher.launch(
+                    Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "*/*"
+                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                    }
+                )
             }.onFailure {
                 multiCallback.fire(emptyList())
             }
