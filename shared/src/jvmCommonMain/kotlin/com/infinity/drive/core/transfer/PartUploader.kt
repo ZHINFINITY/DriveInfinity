@@ -8,6 +8,7 @@ import com.infinity.drive.core.crypto.WrappedKeyRepository
 import com.infinity.drive.core.dispatchers.DispatcherProvider
 import com.infinity.drive.core.media.ThumbnailStore
 import com.infinity.drive.core.telegram.TelegramClient
+import com.infinity.drive.core.telegram.TelegramException
 import com.infinity.drive.core.telegram.TelegramUploadEvent
 import com.infinity.drive.data.local.dao.FilePartDao
 import com.infinity.drive.data.local.entity.FileEntity
@@ -18,6 +19,10 @@ import com.infinity.drive.core.files.MimeTypes
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -111,7 +116,7 @@ class PartUploader(
                     mimeType = if (encrypt) OCTET_STREAM else entity.mimeType,
                     caption = manifestCodec.encode(partManifest, encrypt),
                     thumbnailPath = null
-                ).collect { event ->
+                ).failWhenIdle("Part upload stalled").collect { event ->
                     when (event) {
                         is TelegramUploadEvent.Started -> Unit
                         is TelegramUploadEvent.Progress -> {
@@ -198,6 +203,28 @@ class PartUploader(
         const val TAG = "PartUploader"
         const val SCRATCH_DIR = "parts"
         const val OCTET_STREAM = "application/octet-stream"
+        const val STALL_TIMEOUT_MS = 45_000L
+        const val STALL_CODE = 598
+    }
+
+    private fun <T> Flow<T>.failWhenIdle(message: String): Flow<T> = channelFlow {
+        val relay = Channel<T>(Channel.BUFFERED)
+        launch {
+            try {
+                collect { relay.send(it) }
+                relay.close()
+            } catch (error: Throwable) {
+                relay.close(error)
+            }
+        }
+        while (true) {
+            val received = withTimeoutOrNull(STALL_TIMEOUT_MS) {
+                relay.receiveCatching()
+            } ?: throw TelegramException(STALL_CODE, message)
+            received.exceptionOrNull()?.let { throw it }
+            if (received.isClosed) break
+            send(received.getOrThrow())
+        }
     }
 }
 

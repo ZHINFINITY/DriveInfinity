@@ -154,6 +154,7 @@ import com.infinity.drive.resources.settings_use_wallpaper_colors_available
 import com.infinity.drive.resources.settings_wi_fi_only
 import com.infinity.drive.resources.settings_wi_fi_only_summary
 import com.infinity.drive.resources.theme_dark
+import com.infinity.drive.resources.theme_amoled
 import com.infinity.drive.resources.theme_labels
 import com.infinity.drive.resources.theme_light
 import com.infinity.drive.resources.theme_system
@@ -942,6 +943,7 @@ private fun AppearanceSection(state: SettingsUiState, viewModel: SettingsViewMod
                 subtitle = when (prefs.theme) {
                     AppTheme.LIGHT -> stringResource(Res.string.theme_light)
                     AppTheme.DARK -> stringResource(Res.string.theme_dark)
+                    AppTheme.AMOLED -> stringResource(Res.string.theme_amoled)
                     AppTheme.SYSTEM -> stringResource(Res.string.theme_system)
                 },
                 onClick = { showThemeDialog = true }

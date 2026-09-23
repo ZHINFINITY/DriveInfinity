@@ -674,6 +674,7 @@
     <string name="settings_tighter_list_rows_without">Linhas de lista mais compactas, sem exibir tamanho e data</string>
     <string name="settings_use_wallpaper_colors_available">Usar as cores do papel de parede quando disponíveis</string>
     <string name="theme_dark">Escuro</string>
+    <string name="theme_amoled">AMOLED</string>
     <string name="theme_light">Claro</string>
     <string name="theme_system">Seguir o sistema</string>
 
@@ -904,6 +905,7 @@
     <string-array name="theme_labels">
         <item>Claro</item>
         <item>Escuro</item>
+        <item>AMOLED</item>
         <item>Seguir o sistema</item>
     </string-array>
     <string-array name="language_labels">

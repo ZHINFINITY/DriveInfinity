@@ -18,7 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
 import com.infinity.drive.BuildConfig
 import com.infinity.drive.R
 import com.infinity.drive.core.files.DocumentTreePaths
@@ -51,7 +52,7 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
     val prefs by settingsRepository.preferences.collectAsStateWithLifecycle(UserPreferences())
     val darkTheme = when (prefs.theme) {
         AppTheme.LIGHT -> false
-        AppTheme.DARK -> true
+        AppTheme.DARK, AppTheme.AMOLED -> true
         AppTheme.SYSTEM -> isSystemInDarkTheme()
     }
 
@@ -68,7 +69,8 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
             runCatching {
                 context.contentResolver.takePersistableUriPermission(
                     it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
         }
@@ -175,8 +177,8 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
         StandardBackupFolder.entries.map { StandardFolderOption(it.labelRes, it.path) }
     }
     val appIcon: @Composable (Modifier) -> Unit = { modifier ->
-        AsyncImage(
-            model = R.mipmap.ic_launcher,
+        Image(
+            painter = painterResource(R.mipmap.ic_launcher),
             contentDescription = null,
             modifier = modifier
         )
@@ -206,7 +208,11 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
         content()
 
         activeFolderPickerCallback?.let { callback ->
-            DriveInfinityTheme(darkTheme = darkTheme, dynamicColor = prefs.dynamicColor) {
+                DriveInfinityTheme(
+                    darkTheme = darkTheme,
+                    dynamicColor = prefs.dynamicColor,
+                    amoled = prefs.theme == AppTheme.AMOLED
+                ) {
                 FileSystemFolderPickerDialog(
                     rootPath = externalStorageRoot,
                     listSubfolders = { path ->

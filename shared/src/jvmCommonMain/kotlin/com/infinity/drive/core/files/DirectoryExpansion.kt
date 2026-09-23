@@ -12,7 +12,7 @@ fun expandDirectory(reference: String): List<ImportSource>? {
     if (!root.isDirectory) return null
     val base = root.parentFile ?: return null
     return root.walkTopDown()
-        .filter { it.isFile && it.length() > 0 }
+        .filter { it.isFile && it.canRead() }
         .map { file ->
             ImportSource(
                 reference = file.absolutePath,

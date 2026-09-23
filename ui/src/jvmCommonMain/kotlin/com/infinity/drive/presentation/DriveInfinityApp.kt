@@ -122,7 +122,7 @@ fun DriveInfinityApp(
 
     val darkTheme = when (state.theme) {
         AppTheme.LIGHT -> false
-        AppTheme.DARK -> true
+        AppTheme.DARK, AppTheme.AMOLED -> true
         AppTheme.SYSTEM -> isSystemInDarkTheme()
     }
 
@@ -153,7 +153,11 @@ fun DriveInfinityApp(
         true
     }
 
-    DriveInfinityTheme(darkTheme = darkTheme, dynamicColor = state.dynamicColor) {
+    DriveInfinityTheme(
+        darkTheme = darkTheme,
+        dynamicColor = state.dynamicColor,
+        amoled = state.theme == AppTheme.AMOLED
+    ) {
         CompositionLocalProvider(
             (LocalLocaleList as ProvidableCompositionLocal<LocaleList>) provides targetLocaleList,
             LocalCompactLayout provides state.compactLayout

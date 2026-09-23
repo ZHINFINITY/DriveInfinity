@@ -11,10 +11,15 @@ import androidx.compose.runtime.Composable
 fun DriveInfinityTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
+    amoled: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = platformColorScheme(darkTheme, dynamicColor)
-        ?: if (darkTheme) BlueDarkColorScheme else BlueLightColorScheme
+    val colorScheme = if (amoled) {
+        AmoledColorScheme
+    } else {
+        platformColorScheme(darkTheme, dynamicColor)
+            ?: if (darkTheme) BlueDarkColorScheme else BlueLightColorScheme
+    }
 
     PlatformThemeSideEffects(darkTheme)
 

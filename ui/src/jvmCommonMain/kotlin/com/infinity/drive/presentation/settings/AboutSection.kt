@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,7 +63,6 @@ fun AboutSection(state: SettingsUiState, viewModel: SettingsViewModel) {
         LocalAppIcon.current(
             Modifier
                 .size(88.dp)
-                .clip(MaterialTheme.shapes.extraLarge)
         )
         Spacer(Modifier.height(4.dp))
         Text(

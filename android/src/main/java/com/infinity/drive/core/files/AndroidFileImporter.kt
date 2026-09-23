@@ -114,7 +114,7 @@ class AndroidFileImporter(
                     val childName = FileNameUtils.sanitize(child.name ?: "unnamed")
                     if (child.isDirectory) {
                         visit(child, "$relativeFolder/$childName")
-                    } else if (child.isFile) {
+                    } else if (child.isFile && child.canRead()) {
                         result += ImportSource(
                             reference = child.uri.toString(),
                             relativeFolder = relativeFolder

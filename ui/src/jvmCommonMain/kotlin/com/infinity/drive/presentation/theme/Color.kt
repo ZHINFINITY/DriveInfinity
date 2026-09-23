@@ -80,6 +80,44 @@ val BlueDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = Color(0xFF33353A)
 )
 
+/** True-black palette for OLED displays. Dynamic color is intentionally bypassed. */
+val AmoledColorScheme = darkColorScheme(
+    primary = Color(0xFFB0C6FF),
+    onPrimary = Color(0xFF002D6E),
+    primaryContainer = Color(0xFF003B89),
+    onPrimaryContainer = Color(0xFFD9E2FF),
+    secondary = Color(0xFFBFC6DC),
+    onSecondary = Color(0xFF1A1D29),
+    secondaryContainer = Color(0xFF242733),
+    onSecondaryContainer = Color(0xFFDBE2F9),
+    tertiary = Color(0xFF5CD5F9),
+    onTertiary = Color(0xFF003642),
+    tertiaryContainer = Color(0xFF003C4A),
+    onTertiaryContainer = Color(0xFFB4EBFF),
+    error = Color(0xFFFFB4AB),
+    onError = Color(0xFF690005),
+    errorContainer = Color(0xFF8C0008),
+    onErrorContainer = Color(0xFFFFDAD6),
+    background = Color.Black,
+    onBackground = Color(0xFFE6E1E9),
+    surface = Color.Black,
+    onSurface = Color(0xFFE6E1E9),
+    surfaceVariant = Color(0xFF1C1B20),
+    onSurfaceVariant = Color(0xFFC7C5D0),
+    outline = Color(0xFF918F99),
+    outlineVariant = Color(0xFF48464F),
+    inverseSurface = Color(0xFFE6E1E9),
+    inverseOnSurface = Color(0xFF303036),
+    inversePrimary = Color(0xFF1B6EF3),
+    surfaceDim = Color.Black,
+    surfaceBright = Color(0xFF1C1B20),
+    surfaceContainerLowest = Color.Black,
+    surfaceContainerLow = Color(0xFF08080A),
+    surfaceContainer = Color(0xFF0D0D10),
+    surfaceContainerHigh = Color(0xFF121216),
+    surfaceContainerHighest = Color(0xFF18181C)
+)
+
 /**
  * Source hues for the storage breakdown. Categorical data needs hues that stay
  * apart from each other, which the scheme's accent roles cannot guarantee, so
