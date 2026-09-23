@@ -122,6 +122,14 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
                 if (none { it == single }) add(single)
             }
         }
+        uris.forEach { uri ->
+            runCatching {
+                context.contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            }
+        }
         multiCallback.fire(uris.map { it.toString() })
     }
     val multiFilePicker = remember {
@@ -133,6 +141,10 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
                         addCategory(Intent.CATEGORY_OPENABLE)
                         type = "*/*"
                         putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                        addFlags(
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                        )
                     }
                 )
             }.onFailure {

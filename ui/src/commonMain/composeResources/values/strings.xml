@@ -1,6 +1,6 @@
 <resources>
     <!-- App-wide -->
-    <string name="app_name">DriveInfinity</string>
+    <string name="app_name">Drive∞</string>
     <string name="app_backed_up">Backed up</string>
     <string name="app_drive_recreated">Your drive was deleted in Telegram, so a new empty one was created</string>
     <string name="app_no_results">No results</string>
