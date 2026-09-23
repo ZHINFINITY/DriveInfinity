@@ -331,11 +331,13 @@ class BackupRepositoryImpl(
         setTransfers(sessionId, from = TransferState.QUEUED, to = TransferState.PAUSED)
         setTransfers(sessionId, from = TransferState.RUNNING, to = TransferState.PAUSED)
         backupDao.setSessionStatus(sessionId, BackupSessionStatus.PAUSED, null)
+        backupSessionTracker.refresh(sessionId)
     }
 
     override suspend fun resumeBackup(sessionId: String) {
         setTransfers(sessionId, from = TransferState.PAUSED, to = TransferState.QUEUED)
         backupDao.setSessionStatus(sessionId, BackupSessionStatus.RUNNING, null)
+        backupSessionTracker.refresh(sessionId)
         transferRepository.recoverOrphanedTransfers()
     }
 

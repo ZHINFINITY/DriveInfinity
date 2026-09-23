@@ -111,12 +111,16 @@ fun ProvidePlatformActions(content: @Composable () -> Unit) {
 
     val multiCallback = remember { CallbackHolder<List<String>>() }
     val multiLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenMultipleDocuments()
+        ActivityResultContracts.GetMultipleContents()
     ) { uris -> multiCallback.fire(uris.map { it.toString() }) }
     val multiFilePicker = remember {
         MultiFilePicker { onPicked ->
             multiCallback.arm(onPicked)
-            multiLauncher.launch(arrayOf("*/*"))
+            runCatching {
+                multiLauncher.launch("*/*")
+            }.onFailure {
+                multiCallback.fire(emptyList())
+            }
         }
     }
 
@@ -265,7 +269,8 @@ private class CallbackHolder<T> {
     }
 
     fun fire(value: T) {
-        pending?.invoke(value)
+        val callback = pending
         pending = null
+        callback?.invoke(value)
     }
 }
