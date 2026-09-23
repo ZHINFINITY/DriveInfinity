@@ -3,6 +3,7 @@ package com.infinity.drive.core.files
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.provider.DocumentsContract
 import android.provider.OpenableColumns
 import androidx.documentfile.provider.DocumentFile
 import androidx.core.net.toUri
@@ -101,7 +102,10 @@ class AndroidFileImporter(
         val uri = runCatching { Uri.parse(reference) }.getOrNull()
             ?.takeIf { it.scheme == ContentResolver.SCHEME_CONTENT }
             ?: return null
-        val root = DocumentFile.fromTreeUri(context, uri)?.takeIf { it.isDirectory }
+        if (!DocumentsContract.isTreeUri(uri)) return null
+        val root = runCatching { DocumentFile.fromTreeUri(context, uri) }
+            .getOrNull()
+            ?.takeIf { it.isDirectory }
             ?: return null
         val rootName = FileNameUtils.sanitize(root.name ?: "Folder")
         val result = mutableListOf<ImportSource>()
