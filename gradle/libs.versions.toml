@@ -1,8 +1,8 @@
 [versions]
 #noinspection UnusedVersionCatalogEntry
-appVersion = "1.4.2"
+appVersion = "1.0.0"
 #noinspection UnusedVersionCatalogEntry
-appVersionCode = "9"
+appVersionCode = "100"
 agp = "9.4.1"
 kotlin = "2.4.20"
 ksp = "2.3.11"

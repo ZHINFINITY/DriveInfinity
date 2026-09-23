@@ -83,6 +83,28 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           draft: true
+          name: DriveInfinity v1.0.0
+          generate_release_notes: false
+          body: |
+            ## DriveInfinity v1.0.0
+
+            This release makes DriveInfinity more reliable, clearer to use, and stronger for long-running cloud uploads.
+
+            ### Highlights
+            - Added AMOLED theme support with a true-black palette.
+            - Fixed the About page crash and removed inherited links from the original project.
+            - Added DriveInfinity GitHub and Ko-fi links in About.
+            - Improved whole-folder uploads, including nested files and zero-byte files.
+            - Made pause/resume and large-file transfers more resilient with stall recovery and persistent progress recovery.
+            - Added a richer home dashboard with upload, queue, storage, and recent-file information.
+            - Improved transfer cards, history sections, navigation styling, and spacing to prevent overlap.
+            - Added chunk progress details below upload progress bars for large files.
+            - Improved storage category visibility for images, video, audio, documents, archives, and other files.
+            - Fixed launcher icon sizing and About icon rendering.
+
+            ### Downloads
+            - Android release APKs
+            - Windows MSI installer
           files: |
             artifacts/*.apk
             artifacts/*.msi
