@@ -23,8 +23,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(grep '^appVersion = ' gradle/libs.versions.toml | cut -d'"'"' -f2)" = "1.0.0"
-          test "$(grep '^appVersionCode = ' gradle/libs.versions.toml | cut -d'"'"' -f2)" = "100"
+          grep -q '^appVersion = "1.0.0"$' gradle/libs.versions.toml
+          grep -q '^appVersionCode = "100"$' gradle/libs.versions.toml
           if git grep -n -i -E 'teledrive|tele drive|dr\.disagree|mpv∞|mpvinfinity'; then
             echo "Legacy branding found in tracked source."
             exit 1
