@@ -20,6 +20,16 @@ kotlin {
 
     jvm("desktop")
 
+    val desktopNativeClassifier = when {
+        System.getProperty("os.name").orEmpty().contains("win", ignoreCase = true) ->
+            "windows_amd64"
+        System.getProperty("os.name").orEmpty().contains("linux", ignoreCase = true) ->
+            "linux_amd64_gnu_ssl3"
+        System.getProperty("os.name").orEmpty().contains("mac", ignoreCase = true) ->
+            "macos_arm64"
+        else -> error("Unsupported desktop operating system for TDLight natives")
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -47,7 +57,9 @@ kotlin {
             dependsOn(jvmCommonMain)
             dependencies {
                 implementation(libs.tdlight.java)
-                implementation("it.tdlight:tdlight-natives:${libs.versions.tdlightNatives.get()}:windows_amd64")
+                implementation(
+                    "it.tdlight:tdlight-natives:${libs.versions.tdlightNatives.get()}:$desktopNativeClassifier"
+                )
             }
         }
         named("desktopTest") {

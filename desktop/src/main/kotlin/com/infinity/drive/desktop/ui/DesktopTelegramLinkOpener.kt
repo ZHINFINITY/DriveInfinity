@@ -1,6 +1,7 @@
 package com.infinity.drive.desktop.ui
 
 import com.infinity.drive.presentation.platform.TelegramLinkOpener
+import com.sun.jna.Platform
 import java.awt.Desktop
 import java.net.URI
 
@@ -12,17 +13,35 @@ import java.net.URI
 class DesktopTelegramLinkOpener : TelegramLinkOpener {
 
     override val canOpenTelegram: Boolean by lazy {
-        runCatching {
-            ProcessBuilder("reg", "query", "HKEY_CLASSES_ROOT\\tg")
-                .redirectErrorStream(true)
-                .start()
-                .apply { inputStream.readBytes() }
-                .waitFor() == 0
-        }.getOrDefault(false)
+        when {
+            Platform.isWindows() -> runCatching {
+                ProcessBuilder("reg", "query", "HKEY_CLASSES_ROOT\\tg")
+                    .redirectErrorStream(true)
+                    .start()
+                    .apply { inputStream.readBytes() }
+                    .waitFor() == 0
+            }.getOrDefault(false)
+            Platform.isLinux() -> commandAvailable("xdg-open")
+            else -> Desktop.isDesktopSupported()
+        }
     }
 
     override fun open(link: String): Boolean = runCatching {
-        Desktop.getDesktop().browse(URI(link))
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().browse(URI(link))
+        } else if (Platform.isLinux()) {
+            ProcessBuilder("xdg-open", link).start()
+        } else {
+            return false
+        }
         true
+    }.getOrDefault(false)
+
+    private fun commandAvailable(command: String): Boolean = runCatching {
+        ProcessBuilder("sh", "-c", "command -v $command")
+            .redirectErrorStream(true)
+            .start()
+            .apply { inputStream.readBytes() }
+            .waitFor() == 0
     }.getOrDefault(false)
 }

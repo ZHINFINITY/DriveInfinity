@@ -61,10 +61,12 @@ dependencies {
 
 val vlcVersion = "3.0.21"
 val vlcZip = layout.buildDirectory.file("vlc/vlc-$vlcVersion-win64.zip")
+val isLinuxHost = System.getProperty("os.name").orEmpty().contains("linux", ignoreCase = true)
 
 val downloadVlc = tasks.register("downloadVlc") {
     description = "Downloads the VLC natives archive for bundling"
     group = "build"
+    onlyIf { !isLinuxHost }
     val zipFile = vlcZip
     val archiveName = "vlc-$vlcVersion-win64.zip"
     val attempts = 3
@@ -110,6 +112,7 @@ val downloadVlc = tasks.register("downloadVlc") {
 val prepareVlcNatives = tasks.register<Copy>("prepareVlcNatives") {
     description = "Unpacks the VLC libraries the inline player loads"
     group = "build"
+    onlyIf { !isLinuxHost }
     dependsOn(downloadVlc)
     from(zipTree(vlcZip)) {
         include("vlc-$vlcVersion/libvlc.dll")
@@ -123,12 +126,76 @@ val prepareVlcNatives = tasks.register<Copy>("prepareVlcNatives") {
     into(layout.buildDirectory.dir("appResources/windows-x64/vlc"))
 }
 
+val appImageTool = layout.buildDirectory.file("tools/appimagetool-x86_64.AppImage")
+val downloadAppImageTool = tasks.register("downloadAppImageTool") {
+    description = "Downloads appimagetool for assembling the Linux AppImage"
+    group = "distribution"
+    outputs.file(appImageTool)
+    doLast {
+        val target = appImageTool.get().asFile
+        if (target.length() > 0) return@doLast
+        target.parentFile.mkdirs()
+        URI("https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage")
+            .toURL()
+            .openStream()
+            .use { input -> target.outputStream().use { output -> input.copyTo(output) } }
+        check(target.length() > 0) { "Downloaded appimagetool is empty" }
+        check(target.setExecutable(true)) { "Could not make appimagetool executable" }
+    }
+}
+
+val buildAppImage = tasks.register("buildAppImage") {
+    description = "Builds a single-file Linux AppImage from the Compose desktop distribution"
+    group = "distribution"
+    dependsOn("packageAppImage", downloadAppImageTool)
+    val appDir = layout.buildDirectory.dir("compose/binaries/main/app/DriveInfinity")
+    val output = layout.buildDirectory.file("compose/binaries/main/appimage/DriveInfinity-x86_64.AppImage")
+    outputs.file(output)
+    doLast {
+        val directory = appDir.get().asFile
+        check(directory.isDirectory) { "Compose Linux application directory is missing: $directory" }
+        File(directory, "DriveInfinity.desktop").writeText(
+            """[Desktop Entry]
+Type=Application
+Name=DriveInfinity
+Comment=Private cloud storage on your own Telegram channel
+Exec=DriveInfinity
+Icon=DriveInfinity
+Categories=Network;FileTransfer;
+Terminal=false
+"""
+        )
+        File(directory, "AppRun").apply {
+            writeText("#!/bin/sh\nexec \"\$(dirname \"\$0\")/bin/DriveInfinity\" \"\$@\"\n")
+            check(setExecutable(true)) { "Could not make AppRun executable" }
+        }
+        val icon = File(directory, "lib/DriveInfinity.png")
+        check(icon.isFile) { "Linux application icon is missing: $icon" }
+        icon.copyTo(File(directory, "DriveInfinity.png"), overwrite = true)
+        val target = output.get().asFile
+        target.parentFile.mkdirs()
+        val tool = appImageTool.get().asFile
+        val exitCode = ProcessBuilder(
+            tool.absolutePath,
+            "--appimage-extract-and-run",
+            "--no-appstream",
+            directory.absolutePath,
+            target.absolutePath
+        )
+            .inheritIO()
+            .start()
+            .waitFor()
+        check(exitCode == 0) { "appimagetool failed with exit code $exitCode" }
+        check(target.isFile && target.length() > 0) { "AppImage was not created: $target" }
+        check(target.setExecutable(true)) { "Could not make AppImage executable" }
+    }
+}
+
 tasks.matching {
     it.name in setOf(
         "run",
         "hotRun",
         "packageMsi",
-        "packageDeb",
         "packageDmg",
         "createDistributable",
         "packageDistributionForCurrentOS"
@@ -141,7 +208,7 @@ compose.desktop {
         providers.gradleProperty("desktopJavaHome").orNull?.let { javaHome = it }
 
         nativeDistributions {
-            targetFormats(TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Dmg)
+            targetFormats(TargetFormat.Msi, TargetFormat.Deb, TargetFormat.AppImage, TargetFormat.Dmg)
             appResourcesRootDir.set(layout.buildDirectory.dir("appResources"))
             packageName = "DriveInfinity"
             packageVersion = libs.versions.appVersion.get()
