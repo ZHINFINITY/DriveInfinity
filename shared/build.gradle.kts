@@ -20,14 +20,20 @@ kotlin {
 
     jvm("desktop")
 
+    val osName = System.getProperty("os.name").orEmpty().lowercase()
+    val osArch = System.getProperty("os.arch").orEmpty().lowercase()
+    val isArm64 = osArch == "aarch64" || osArch == "arm64"
     val desktopNativeClassifier = when {
-        System.getProperty("os.name").orEmpty().contains("win", ignoreCase = true) ->
+        osName.contains("win") ->
             "windows_amd64"
-        System.getProperty("os.name").orEmpty().contains("linux", ignoreCase = true) ->
+        osName.contains("linux") && isArm64 ->
+            "linux_arm64_gnu_ssl3"
+        osName.contains("linux") ->
             "linux_amd64_gnu_ssl3"
-        System.getProperty("os.name").orEmpty().contains("mac", ignoreCase = true) ->
-            "macos_arm64"
-        else -> error("Unsupported desktop operating system for TDLight natives")
+        osName.contains("mac") ->
+            // Apple Silicon is arm64; Intel Macs are rare for new builds
+            if (isArm64) "macos_arm64" else "macos_amd64"
+        else -> error("Unsupported desktop operating system for TDLight natives: os=$osName arch=$osArch")
     }
 
     sourceSets {
