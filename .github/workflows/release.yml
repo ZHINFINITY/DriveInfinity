@@ -23,8 +23,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q '^appVersion = "1.0.1"$' gradle/libs.versions.toml
-          grep -q '^appVersionCode = "101"$' gradle/libs.versions.toml
+          grep -q '^appVersion = "1.0.2"$' gradle/libs.versions.toml
+          grep -q '^appVersionCode = "102"$' gradle/libs.versions.toml
           if git grep -n -i -E 'teledrive|tele drive|dr\.disagree|mpv∞|mpvinfinity' -- ':!.github/workflows/release.yml'; then
             echo "Legacy branding found in tracked source."
             exit 1
@@ -117,7 +117,7 @@ jobs:
 
   publish:
     name: Publish release
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     needs: [android, windows, linux]
     runs-on: ubuntu-latest
     permissions:
@@ -130,37 +130,29 @@ jobs:
 
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: v1.0.2
           draft: true
-          name: Drive∞ v1.0.1
+          name: Drive∞ v1.0.2
           generate_release_notes: false
           body: |
-            ## Drive∞ v1.0.1
+            ## Drive∞ v1.0.2
 
-            Drive∞ v1.0.1 brings a smoother, stronger, and more polished experience for cloud storage, uploads, downloads, and everyday file management.
+            Drive∞ v1.0.2 is a stability and packaging release with refined desktop and Android builds.
 
-            ### Major improvements
-            - 🌑 AMOLED theme with a true-black interface for comfortable viewing and battery-friendly dark mode.
-            - ☁️ More dependable large-file uploads and downloads with stronger pause, resume, retry, and transfer recovery behavior.
-            - 📁 Complete folder uploads with nested files, preserved folder structure, and support for empty files.
-            - 📊 Clearer transfer progress with upload/download status, transfer history, queue information, and chunk details for large files.
-            - 🏠 A richer home dashboard with active uploads, queue statistics, recent files, storage usage, and backup information.
-            - 💾 More informative storage views with file-type visibility for images, video, audio, documents, archives, and other files.
-            - 🎨 A more polished interface across storage channels, transfer cards, history sections, navigation, spacing, and progress presentation.
-            - 🖼️ Improved app icon presentation across the launcher, About page, and application surfaces.
-            - 🔄 GitHub-based in-app update checking through the Drive∞ release channel.
+            ### Improvements
+            - 🛡️ More reliable Telegram client natives selection for desktop packaging targets
+            - 📦 Updated desktop packaging pipeline for multi-architecture installers
+            - 🔧 Version bump across in-app version display and package metadata (1.0.2 / 102)
 
             ### Bug fixes and stability
-            - ✅ Fixed SAF file and image uploads on Android 13 and newer.
-            - ✅ Improved file-picker permission handling for selected documents and folders.
-            - ✅ Prevented upload-import errors from closing the app.
-            - ✅ Improved pause and resume behavior for active backup sessions.
-            - ✅ Improved notification icon rendering and Drive∞ branding across Android surfaces.
+            - ✅ Fixed missing native library load path issues for ARM64 desktop builds
+            - ✅ Hardened Gradle configuration-cache compatibility for AppImage packaging tasks
 
             ### Downloads
             - Android release APKs for all configured ABIs
             - Windows MSI installer
-            - Linux Debian installer (x86_64 and aarch64)
-            - Linux AppImage (x86_64 and aarch64)
+            - Desktop Deb packages
+            - Desktop AppImage packages
           files: |
             artifacts/*.apk
             artifacts/*.msi
