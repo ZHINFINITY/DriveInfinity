@@ -128,7 +128,13 @@ val prepareVlcNatives = tasks.register<Copy>("prepareVlcNatives") {
     into(layout.buildDirectory.dir("appResources/windows-x64/vlc"))
 }
 
-val appImageTool = layout.buildDirectory.file("tools/appimagetool-x86_64.AppImage")
+val hostArch = System.getProperty("os.arch").orEmpty().lowercase()
+val appImageArch = when {
+    hostArch == "aarch64" || hostArch == "arm64" -> "aarch64"
+    else -> "x86_64"
+}
+
+val appImageTool = layout.buildDirectory.file("tools/appimagetool-$appImageArch.AppImage")
 val downloadAppImageTool = tasks.register("downloadAppImageTool") {
     description = "Downloads appimagetool for assembling the Linux AppImage"
     group = "distribution"
@@ -138,7 +144,7 @@ val downloadAppImageTool = tasks.register("downloadAppImageTool") {
         val target = appImageTool.get().asFile
         if (target.length() > 0) return@doLast
         target.parentFile.mkdirs()
-        URI("https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage")
+        URI("https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$appImageArch.AppImage")
             .toURL()
             .openStream()
             .use { input -> target.outputStream().use { output -> input.copyTo(output) } }
@@ -153,7 +159,7 @@ val buildAppImage = tasks.register("buildAppImage") {
     notCompatibleWithConfigurationCache("Runs the external appimagetool process")
     dependsOn("packageAppImage", downloadAppImageTool)
     val appDir = layout.buildDirectory.dir("compose/binaries/main/app/DriveInfinity")
-    val output = layout.buildDirectory.file("compose/binaries/main/appimage/DriveInfinity-x86_64.AppImage")
+    val output = layout.buildDirectory.file("compose/binaries/main/appimage/DriveInfinity-$appImageArch.AppImage")
     outputs.file(output)
     doLast {
         val directory = appDir.get().asFile

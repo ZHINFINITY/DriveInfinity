@@ -84,8 +84,16 @@ jobs:
           if-no-files-found: error
 
   linux:
-    name: Linux
-    runs-on: ubuntu-latest
+    name: Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-latest
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
 
@@ -96,12 +104,12 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Package Debian installer
+      - name: Package Debian installer + AppImage
         run: ./gradlew :desktop:packageDeb :desktop:buildAppImage --no-configuration-cache
 
       - uses: actions/upload-artifact@v4
         with:
-          name: linux-release
+          name: linux-${{ matrix.arch }}-release
           path: |
             desktop/build/compose/binaries/main/deb/*.deb
             desktop/build/compose/binaries/main/appimage/*.AppImage
@@ -151,8 +159,8 @@ jobs:
             ### Downloads
             - Android release APKs for all configured ABIs
             - Windows MSI installer
-            - Linux Debian installer
-            - Linux AppImage
+            - Linux Debian installer (x86_64 and aarch64)
+            - Linux AppImage (x86_64 and aarch64)
           files: |
             artifacts/*.apk
             artifacts/*.msi
