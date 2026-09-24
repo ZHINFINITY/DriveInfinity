@@ -66,6 +66,7 @@ val isLinuxHost = System.getProperty("os.name").orEmpty().contains("linux", igno
 val downloadVlc = tasks.register("downloadVlc") {
     description = "Downloads the VLC natives archive for bundling"
     group = "build"
+    notCompatibleWithConfigurationCache("Downloads an external platform-specific native archive")
     onlyIf { !isLinuxHost }
     val zipFile = vlcZip
     val archiveName = "vlc-$vlcVersion-win64.zip"
@@ -112,6 +113,7 @@ val downloadVlc = tasks.register("downloadVlc") {
 val prepareVlcNatives = tasks.register<Copy>("prepareVlcNatives") {
     description = "Unpacks the VLC libraries the inline player loads"
     group = "build"
+    notCompatibleWithConfigurationCache("Stages platform-specific native libraries")
     onlyIf { !isLinuxHost }
     dependsOn(downloadVlc)
     from(zipTree(vlcZip)) {
@@ -130,6 +132,7 @@ val appImageTool = layout.buildDirectory.file("tools/appimagetool-x86_64.AppImag
 val downloadAppImageTool = tasks.register("downloadAppImageTool") {
     description = "Downloads appimagetool for assembling the Linux AppImage"
     group = "distribution"
+    notCompatibleWithConfigurationCache("Downloads and prepares an external AppImage tool")
     outputs.file(appImageTool)
     doLast {
         val target = appImageTool.get().asFile
@@ -147,6 +150,7 @@ val downloadAppImageTool = tasks.register("downloadAppImageTool") {
 val buildAppImage = tasks.register("buildAppImage") {
     description = "Builds a single-file Linux AppImage from the Compose desktop distribution"
     group = "distribution"
+    notCompatibleWithConfigurationCache("Runs the external appimagetool process")
     dependsOn("packageAppImage", downloadAppImageTool)
     val appDir = layout.buildDirectory.dir("compose/binaries/main/app/DriveInfinity")
     val output = layout.buildDirectory.file("compose/binaries/main/appimage/DriveInfinity-x86_64.AppImage")
