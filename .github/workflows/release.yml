@@ -128,6 +128,22 @@ jobs:
           path: artifacts
           merge-multiple: true
 
+      - name: Flatten package files for release upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-files
+          # Android APKs and Windows MSI land at the artifact root
+          find artifacts -type f \( -name '*.apk' -o -name '*.msi' \) -print -exec cp -n {} release-files/ \;
+          # Linux packages keep deb/ and appimage/ subdirs from upload-artifact
+          find artifacts -type f \( -name '*.deb' -o -name '*.AppImage' -o -name '*.appimage' \) -print -exec cp -n {} release-files/ \;
+          echo "--- release-files ---"
+          ls -lah release-files
+          test -n "$(find release-files -name '*.apk' | head -1)"
+          test -n "$(find release-files -name '*.msi' | head -1)"
+          test -n "$(find release-files -name '*.deb' | head -1)"
+          test -n "$(find release-files \( -name '*.AppImage' -o -name '*.appimage' \) | head -1)"
+
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.2
@@ -153,8 +169,4 @@ jobs:
             - Windows MSI installer
             - Desktop Deb packages
             - Desktop AppImage packages
-          files: |
-            artifacts/*.apk
-            artifacts/*.msi
-            artifacts/*.deb
-            artifacts/*.AppImage
+          files: release-files/*
