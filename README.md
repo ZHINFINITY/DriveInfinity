@@ -6,7 +6,7 @@
 
 Back up and browse your files using a private Telegram channel as storage.
 
-[![Platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20Windows-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#requirements)
+[![Platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20Windows%20%7C%20Linux-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#requirements)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.4-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/Compose%20Multiplatform-Material%203-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)](https://www.jetbrains.com/compose-multiplatform/)
 [![Release](https://img.shields.io/github/v/release/ZHINFINITY/DriveInfinity?style=for-the-badge&logo=github&logoColor=white&color=1F883D)](https://github.com/ZHINFINITY/DriveInfinity/releases/latest)
@@ -23,9 +23,9 @@ DriveInfinity stores your files in a private Telegram channel on your own accoun
 There is no DriveInfinity server and no account to create with us. The app keeps a
 local index so browsing and search stay fast and work offline.
 
-One Compose Multiplatform codebase ships the Android app and the Windows
-desktop app. They share the storage engine, encryption, transfers and the
-entire UI layer, and both browse the same drive.
+One Compose Multiplatform codebase ships the Android app and the desktop apps for
+Windows and Linux. They share the storage engine, encryption, transfers and the
+entire UI layer, and all browse the same drive.
 
 ## Features
 
@@ -56,6 +56,41 @@ run it. It installs per user with no admin prompt, adds Start menu and desktop
 shortcuts, and uninstalls from Windows Settings. Your session and settings live
 in `%APPDATA%\DriveInfinity` and survive reinstalls.
 
+### Linux
+
+Grab a build from the [Linux GitHub Actions workflow](../../actions/workflows/linux.yml)
+or the [releases page](../../releases). Packages are built for both CPU architectures:
+
+| Package | Use it when |
+| --- | --- |
+| `DriveInfinity-x86_64.AppImage` | 64-bit Intel/AMD Linux (portable, no install) |
+| `DriveInfinity-aarch64.AppImage` | 64-bit ARM Linux (Raspberry Pi 4/5, Ampere, arm64 VMs) |
+| `DriveInfinity_<version>_amd64.deb` | Debian/Ubuntu on x86_64 |
+| `DriveInfinity_<version>_arm64.deb` | Debian/Ubuntu on aarch64 |
+
+**AppImage** (works on most distributions):
+
+```bash
+chmod +x DriveInfinity-*.AppImage
+./DriveInfinity-*.AppImage
+```
+
+If your system lacks FUSE (`libfuse.so.2`), either install it (`sudo apt install libfuse2`)
+or run:
+
+```bash
+./DriveInfinity-*.AppImage --appimage-extract-and-run
+```
+
+**Debian package** (Debian, Ubuntu, and derivatives):
+
+```bash
+sudo apt install ./DriveInfinity_*.deb
+```
+
+Session data and settings live under `~/.config/DriveInfinity` (or the XDG config
+directory) and survive reinstalls.
+
 ### Android
 
 Grab an APK from the [ARM64 GitHub Actions workflow](../../actions/workflows/drive-infinity-arm64.yml) or [releases page](../../releases). Builds are split per CPU
@@ -75,7 +110,7 @@ library the app is built on.
 
 ## Requirements
 
-- Android 8.0 (API 26) or newer, or 64-bit Windows 10+
+- Android 8.0 (API 26) or newer, **or** 64-bit Windows 10+, **or** 64-bit Linux (x86_64 or aarch64)
 - A Telegram account
 - Your own Telegram API credentials, free from
   [my.telegram.org](https://my.telegram.org) under *API development tools*
@@ -97,7 +132,7 @@ pooled with anyone else's, and a rate limit on someone else cannot affect you.
 git clone https://github.com/ZHINFINITY/DriveInfinity.git
 cd DriveInfinity
 ./gradlew :android:installDebug  # Android
-./gradlew :desktop:run           # Windows desktop
+./gradlew :desktop:run           # Desktop (Windows or Linux)
 ```
 
 Then in the app:
@@ -109,10 +144,10 @@ Then in the app:
 3. Choose the folders to back up.
 4. Optionally enable **Encrypt uploads** and set a recovery passphrase.
 
-TDLib native libraries come prebuilt on both platforms: the
+TDLib native libraries come prebuilt on every platform: the
 [`tdlibx/td`](https://github.com/tdlibx/td) AAR via JitPack on Android and
-[tdlight](https://github.com/tdlight-team/tdlight-java) on desktop, so no
-native toolchain is needed.
+[tdlight](https://github.com/tdlight-team/tdlight-java) on desktop (including
+Linux x86_64 and aarch64), so no native toolchain is needed.
 
 ### Packaging the desktop app
 
@@ -121,9 +156,17 @@ Point the build at a full JDK with a `desktopJavaHome` property in your global
 `~/.gradle/gradle.properties`, then:
 
 ```bash
-./gradlew :desktop:packageMsi           # installer
+# Windows
+./gradlew :desktop:packageMsi           # MSI installer
 ./gradlew :desktop:createDistributable  # portable folder with DriveInfinity.exe
+
+# Linux (run on the target arch — x86_64 or aarch64)
+./gradlew :desktop:packageDeb           # Debian package
+./gradlew :desktop:buildAppImage        # single-file AppImage
 ```
+
+CI builds both Linux architectures on every push to `master` via the
+[Linux workflow](../../actions/workflows/linux.yml).
 
 ## Bringing existing files in
 
@@ -162,12 +205,12 @@ shared/               # KMP: storage engine, crypto, sync, transfers
 ├── commonMain/           # core, data, domain
 ├── jvmCommonMain/        # JVM pieces both apps use
 ├── androidMain/          # Keystore, MediaStore, WorkManager glue
-└── desktopMain/          # tdlight client, DPAPI, desktop schedulers
+└── desktopMain/          # tdlight client, DPAPI / desktop crypto, schedulers
 ui/                   # KMP: every screen, theme and string resource
 ├── commonMain/           # compose resources
 └── jvmCommonMain/        # the entire presentation layer
 android/              # Android shell: workers, notifications, media3 player
-desktop/              # Windows shell: window, packaging, streaming bridge
+desktop/              # Desktop shell: window, packaging (MSI / Deb / AppImage), streaming bridge
 ```
 
 Stack: Kotlin Multiplatform, Coroutines, Compose Multiplatform, Material 3
